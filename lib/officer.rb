@@ -1,0 +1,11 @@
+require 'rubygems'
+require 'active_support'
+require 'singleton'
+require 'eventmachine'
+require 'ruby-debug'
+
+require 'officer/log'
+require 'officer/commands'
+require 'officer/connection'
+require 'officer/lock_store'
+require 'officer/server'

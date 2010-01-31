@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+Dir.chdir File.dirname(__FILE__) + '/../lib'
+
+require 'officer'
+
+Officer::Server.new.run
