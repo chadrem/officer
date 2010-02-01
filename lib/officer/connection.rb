@@ -4,6 +4,7 @@ module Officer
     module EmCallbacks
       def post_init
         L.debug "Client connected."
+        @connected = true
       end
 
       def receive_line line
@@ -21,7 +22,10 @@ module Officer
       end
 
       def unbind
+        @connected = false
+
         L.debug "client disconnected."
+        Officer::LockStore.instance.unbind self
       end
     end
 
@@ -36,9 +40,9 @@ module Officer
         send_line "released #{name}"
       end
 
-      def queued name
-        L.debug "queued lock: #{name}"
-        send_line "queued #{name}"
+      def release_failed name
+        L.debug "release lock failed: #{name}"
+        send_line "release_failed #{name}"
       end
     end
 
@@ -46,8 +50,10 @@ module Officer
       include EmCallbacks
       include LockCallbacks
 
+      attr_reader :connected
+
       def send_line line
-        send_data "#{line}\n"
+        send_data "#{line}\n" if @connected
       end
     end
 

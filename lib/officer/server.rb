@@ -9,13 +9,17 @@ module Officer
     end
 
     def run
-      EM.error_handler {|e|
+      EM.error_handler do |e|
         L.debug_exception e
-      }
+      end
     
-      EM::run {
+      EM::run do
+        EM::PeriodicTimer.new(5) do
+          Officer::LockStore.instance.log_state
+        end
+
         EM::start_server @host, @port, Connection::Connection
-      }
+      end
     end
   end
 

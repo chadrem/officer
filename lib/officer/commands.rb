@@ -50,15 +50,16 @@ module Officer
 
       def execute
         L.debug 'executing lock command.'
+        Officer::LockStore.instance.acquire @name, @connection
       end
 
     private
       def setup
-        @lock_name = @params[0]
+        @name = @params[0]
       end
 
       def valid?
-        require_string @lock_name
+        require_string @name
       end
     end
 
@@ -67,15 +68,16 @@ module Officer
 
       def execute
         L.debug 'executing unlock command.'
+        Officer::LockStore.instance.release @name, @connection
       end
 
     private
       def setup
-        @lock_name = @params[0]
+        @name = @params[0]
       end
 
       def valid?
-        require_string @lock_name
+        require_string @name
       end
     end
   end
