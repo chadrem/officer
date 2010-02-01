@@ -62,7 +62,6 @@ module Officer
       if lock.queue.first == connection
         lock.queue.shift
         connection.released name
-        #@connections[connection].delete name
 
         next_connection = lock.queue.first
 
