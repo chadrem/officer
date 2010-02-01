@@ -1,14 +1,15 @@
 module Officer
 
   class Lock
-    def initialize
-      
-    end
-  end
-
-  class WaitQueue
-    def initialize
-      @queue = []
+    def self.locks_for obj
+      case obj.class
+      when String
+        @locks_for_name[obj]
+      when Officer::Connection::Connection
+        @locks_for_connection[obj]
+      else
+        raise 'Invalid argument'
+      end
     end
   end
 
@@ -16,19 +17,8 @@ module Officer
     include Singleton
 
     def initialize
-      @lock_hash = {}
-    end
-
-    def acquire name, conn_id
-      
-    end
-
-    def release name, conn_id
-      
-    end
-
-    def available? name, conn_id
-      
+      @locks_for_name = {}
+      @locks_for_connection = {}
     end
   end
 

@@ -66,7 +66,7 @@ module Officer
       register
 
       def execute
-          L.debug 'executing unlock command.'
+        L.debug 'executing unlock command.'
       end
 
     private

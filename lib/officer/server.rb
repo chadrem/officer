@@ -14,7 +14,7 @@ module Officer
       }
     
       EM::run {
-        EM::start_server @host, @port, Connection::Base
+        EM::start_server @host, @port, Connection::Connection
       }
     end
   end
