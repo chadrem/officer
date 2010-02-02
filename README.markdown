@@ -1,4 +1,6 @@
-# Distributed Lock Server And Client Written In Ruby And Eventmachine
+# Officer - Distributed Lock Server and Client
 
 This project is a work in progress and shouldn't be considered production ready at this time.
-It is inspired by [elock](http://github.com/dustin/elock "elock").
+
+It is implemented using Ruby and Eventmachine.
+Inspiration comes from [elock](http://github.com/dustin/elock).
