@@ -6,6 +6,7 @@ require 'set'
 require 'rubygems'
 require 'active_support'
 require 'eventmachine'
+require 'json'
 require 'ruby-debug'
 
 # Application.

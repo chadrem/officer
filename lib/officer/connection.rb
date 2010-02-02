@@ -9,11 +9,10 @@ module Officer
 
       def receive_line line
         line.chomp!
-        L.debug "Received line: #{line}"
-        tokens = line.split
-        command = tokens.shift
 
-        command = Officer::Command::Factory.create command, self, tokens
+        L.debug "Received line: #{line}"
+
+        command = Officer::Command::Factory.create line, self
         command.execute
 
       rescue Exception => e
@@ -32,17 +31,17 @@ module Officer
     module LockCallbacks
       def acquired name
         L.debug "acquired lock: #{name}"
-        send_line "acquired #{name}"
+        send_line({:result => 'acquired', :name => name}.to_json)
       end
 
       def released name
         L.debug "released lock: #{name}"
-        send_line "released #{name}"
+        send_line({:result => 'released', :name => name}.to_json)
       end
 
       def release_failed name
         L.debug "release lock failed: #{name}"
-        send_line "release_failed #{name}"
+        send_line({:result => 'release_failed', :name => name}.to_json)
       end
     end
 

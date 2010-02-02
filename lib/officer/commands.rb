@@ -5,8 +5,9 @@ module Officer
       @@commands = {} # command_name => klass
 
       class << self
-        def create command_name, connection, params
-          @@commands[command_name].new connection, params
+        def create line, connection
+          request = JSON.parse line
+          @@commands[request['command']].new connection, request
         end
 
         def register command_name, klass
@@ -22,13 +23,13 @@ module Officer
         end
       end
 
-      def initialize connection, params
+      def initialize connection, request
         @connection = connection
-        @params  = params
+        @request  = request
         
         setup
 
-        raise('Invalid params') unless valid?
+        raise('Invalid request') unless valid?
       end
 
       def execute
@@ -37,11 +38,11 @@ module Officer
 
     private
       def valid?
-        false
+        raise 'Must override.'
       end
 
-      def require_string string
-        string && !string.empty?
+      def require_string arg
+        arg.class == String && arg.length > 0
       end
     end
 
@@ -55,11 +56,11 @@ module Officer
 
     private
       def setup
-        @name = @params[0]
+        @name = @request['name']
       end
 
       def valid?
-        require_string @name
+        require_string @request['name']
       end
     end
 
@@ -73,11 +74,11 @@ module Officer
 
     private
       def setup
-        @name = @params[0]
+        @name = @request['name']
       end
 
       def valid?
-        require_string @name
+        require_string @request['name']
       end
     end
   end
