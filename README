@@ -1,4 +1,0 @@
-Ruby Eventmachine based distributed lock server - WORK IN PROGRESS!
-
-2010-1-31
-- Various bits are working.  Many classes need to be completed before this will actually work.
