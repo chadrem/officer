@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{officer}
-  s.version = "0.0.1"
+  s.version = "0.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Chad Remesch"]
@@ -25,7 +25,15 @@ Gem::Specification.new do |s|
      "README.rdoc",
      "Rakefile",
      "VERSION",
+     "bin/officer",
      "lib/officer.rb",
+     "lib/officer/client.rb",
+     "lib/officer/commands.rb",
+     "lib/officer/connection.rb",
+     "lib/officer/lock_store.rb",
+     "lib/officer/log.rb",
+     "lib/officer/server.rb",
+     "officer.gemspec",
      "test/helper.rb",
      "test/test_officer.rb"
   ]
