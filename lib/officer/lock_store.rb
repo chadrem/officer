@@ -76,8 +76,8 @@ module Officer
           @locks.delete name
         end
 
-      # If the connection is queued, but doesn't have the lock,
-      # release it and leave the other connections alone.
+      # If the connection is queued and doesn't have the lock,
+      # dequeue it and leave the other connections alone.
       else
         lock.queue.delete connection
         connection.released name
