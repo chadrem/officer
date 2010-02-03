@@ -5,8 +5,8 @@ It is implemented using Ruby and Eventmachine. Inspiration comes from [elock](ht
 
 ## Installation
 
-  install gemcutter
-  gem install officer
+    gem install gemcutter
+    gem install officer
 
 ## Usage
 
