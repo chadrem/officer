@@ -48,10 +48,10 @@ All debugging output goes to stdout for now.
 ## Planned Features
 
 - Properly handle nested with_lock() blocks.  For example:
-	client.with_lock('some_lock') do
-	  client.with_lock('some_lock') do
-	  end
-	end
+	`client.with_lock('some_lock') do`
+	`  client.with_lock('some_lock') do`
+	`  end`
+	`end`
 
 - Option to abort a lock request if there already a certain number of clients waiting for the lock.
 - Lock statistics.
