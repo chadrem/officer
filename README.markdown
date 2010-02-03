@@ -48,7 +48,7 @@ All debugging output goes to stdout for now.
 ## Planned Features
 
 - Properly handle nested with_lock() blocks.
-- Option to abort a lock request if there already a certain number of clients waiting for the lock.
+- Option to abort a lock request if there is already a certain number of clients waiting for the lock.
 - Lock statistics.
 - Retrieve the complete list of locks.
 - Retrieve the list of locks for the current connection.
