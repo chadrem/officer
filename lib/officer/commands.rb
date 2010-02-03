@@ -37,8 +37,11 @@ module Officer
       end
 
     private
-      def valid?
-        raise 'Must override.'
+      def setup # Override if necessary.
+      end
+
+      def valid? # Override if necessary.
+        true
       end
 
       def require_string arg
@@ -79,6 +82,15 @@ module Officer
 
       def valid?
         require_string @request['name']
+      end
+    end
+
+    class Reset < Base
+      register
+
+      def execute
+        L.debug 'executing reset command.'
+        Officer::LockStore.instance.reset @connection
       end
     end
   end

@@ -24,7 +24,7 @@ module Officer
         @connected = false
 
         L.debug "client disconnected."
-        Officer::LockStore.instance.unbind self
+        Officer::LockStore.instance.reset self
       end
     end
 
@@ -42,6 +42,11 @@ module Officer
       def release_failed name
         L.debug "release lock failed: #{name}"
         send_line({:result => 'release_failed', :name => name}.to_json)
+      end
+
+      def reset_succeeded
+        L.debug "reset"
+        send_line({:result => 'reset_succeeded'}.to_json)
       end
     end
 

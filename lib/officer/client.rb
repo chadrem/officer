@@ -48,6 +48,10 @@ module Officer
       end
     end
 
+    def reset
+      execute({:command => 'reset'}.to_json)
+    end
+
   private
     def connect
       raise AlreadyConnectedError if @socket

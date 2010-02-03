@@ -32,7 +32,7 @@ module Officer
 
       puts "Connections:"
       @connections.each do |connection, names|
-        puts "#{connection.object_id}: names=[#{names.join(', ')}]"
+        puts "#{connection.object_id}: names=[#{names.to_a.join(', ')}]"
       end
       puts
 
@@ -42,33 +42,33 @@ module Officer
     def acquire name, connection
       lock = @locks[name] ||= Lock.new(name)
 
-      # Queue the lock request unless this connection already has the lock.
-      unless lock.queue.include? connection
-        lock.queue << connection
-        (@connections[connection] ||= []) << name
-      end
+      lock.queue << connection unless lock.queue.include? connection
+
+      (@connections[connection] ||= Set.new) << name
       
-      # Tell the client to block unless it has acquired the lock.
       if lock.queue.first == connection
         connection.acquired name
       end
     end
 
-    def release name, connection
+    def release name, connection, options={}
+      options.reverse_merge! :callback => true
+
       lock = @locks[name]
       names = @connections[connection]
 
       # Client should only be able to release a lock that
       # exists and that it has previously queued.
       if lock.nil? || !names.include?(name)
-        connection.release_failed(name) and return
+        connection.release_failed(name) if options[:callback]
+        return
       end
 
       # If connecton has the lock, release it and let the next
       # connection know that it has acquired the lock.
       if lock.queue.first == connection
         lock.queue.shift
-        connection.released name
+        connection.released name if options[:callback]
 
         if next_connection = lock.queue.first
           next_connection.acquired name
@@ -86,14 +86,16 @@ module Officer
       @connections[connection].delete name
     end
 
-    def unbind connection
-      names = @connections[connection] || []
+    def reset connection
+      names = @connections[connection] || Set.new
 
       names.each do |name|
-        release name, connection
+        release name, connection, :callback => false
       end
 
       @connections.delete connection
+
+      connection.reset_succeeded
     end
   end
 
