@@ -19,7 +19,7 @@ All debugging output goes to stdout for now.
 	require 'rubygems'
 	require 'officer'
 
-### Create a client object
+### Create a client object (:host and :port default to localhost:11500)
 
 	client = Officer::Client.new :host => 'localhost', :port => 11500
 
