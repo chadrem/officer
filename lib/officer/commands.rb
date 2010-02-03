@@ -47,6 +47,10 @@ module Officer
       def require_string arg
         arg.class == String && arg.length > 0
       end
+
+      def optional_positive_integer arg
+        arg.nil? || (arg.is_a?(Fixnum) && arg > 0)
+      end
     end
 
     class Lock < Base
@@ -54,16 +58,18 @@ module Officer
 
       def execute
         L.debug 'executing lock command.'
-        Officer::LockStore.instance.acquire @name, @connection
+        Officer::LockStore.instance.acquire @name, @connection, :timeout => @timeout
       end
 
     private
       def setup
         @name = @request['name']
+        @timeout = @request['timeout']
       end
 
       def valid?
         require_string @request['name']
+        optional_positive_integer @request['timeout']
       end
     end
 

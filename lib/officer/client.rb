@@ -11,6 +11,7 @@ module Officer
   class AlreadyConnectedError < GenericError; end
   class NotConnectedError < GenericError; end
   class LockError < GenericError; end
+  class LockTimeoutError < LockError; end
   class UnlockError < GenericError; end
 
   class Client
@@ -28,17 +29,20 @@ module Officer
       connect
     end
 
-    def lock name
-      execute({:command => 'lock', :name => name}.to_json)
+    def lock name, options={}
+      execute({:command => 'lock', :name => name, :timeout => options[:timeout]}.to_json)
     end
 
     def unlock name
       execute({:command => 'unlock', :name => name}.to_json)
     end
 
-    def with_lock name
-      response = lock name
-      raise LockError unless response['result'] == 'acquired'
+    def with_lock name, options={}
+      response = lock name, options
+      result = response['result']
+      
+      raise LockTimeoutError if result == 'timed_out'
+      raise LockError if result != 'acquired'
 
       begin
         yield

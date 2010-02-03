@@ -15,7 +15,7 @@ module Officer
 
     def initialize
       @locks = {} # name => Lock
-      @connections = {} # Connection => [name, ...]
+      @connections = {} # Connection => Set(name, ...)
     end
 
     def log_state
@@ -39,7 +39,7 @@ module Officer
       L.debug '-----'
     end
 
-    def acquire name, connection
+    def acquire name, connection, options={}
       lock = @locks[name] ||= Lock.new(name)
 
       lock.queue << connection unless lock.queue.include? connection
@@ -48,6 +48,8 @@ module Officer
       
       if lock.queue.first == connection
         connection.acquired name
+      else
+        connection.queued name, options
       end
     end
 
@@ -83,7 +85,7 @@ module Officer
         connection.released name
       end
 
-      @connections[connection].delete name
+      names.delete name
     end
 
     def reset connection
@@ -94,8 +96,17 @@ module Officer
       end
 
       @connections.delete connection
-
       connection.reset_succeeded
+    end
+
+    def timeout name, connection
+      lock = @locks[name]
+      names = @connections[connection]
+
+      lock.queue.delete connection
+      names.delete name
+
+      connection.timed_out name
     end
   end
 
