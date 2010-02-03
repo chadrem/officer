@@ -45,6 +45,19 @@ All debugging output goes to stdout for now.
 
 	client.reconnect
 
+## Planned Features
+
+- Properly handle nested with_lock() blocks.  For example:
+	client.with_lock('some_lock') {
+	  client.with_lock('some_lock') {
+	  }
+	  # The lock should still be held at this point.
+	}
+- Option to abort a lock request if there already a certain number of clients waiting for the lock.
+- Lock statistics.
+- Retrieve the complete list of locks.
+- Retrieve the list of locks for the current connection.
+
 ## Copyright
 
 Copyright (c) 2010 Chad Remesch. See LICENSE for details.
