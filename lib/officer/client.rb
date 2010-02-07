@@ -42,13 +42,16 @@ module Officer
       result = response['result']
       
       raise LockTimeoutError if result == 'timed_out'
-      raise LockError if result != 'acquired'
+      raise LockError unless %w(acquired already_acquired).include?(result)
 
       begin
         yield
       ensure
-        response = unlock name
-        raise UnlockError unless response['result'] == 'released'
+        # Deal with nested with_lock calls.  Only the outer most call should tell the server to unlock.
+        if result == 'acquired'
+          response = unlock name
+          raise UnlockError unless response['result'] == 'released'
+        end
       end
     end
 

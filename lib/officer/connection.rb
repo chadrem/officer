@@ -40,6 +40,12 @@ module Officer
         send_line({:result => 'acquired', :name => name}.to_json)
       end
 
+      def already_acquired name
+        L.debug "already acquired lock: #{name}"
+
+        send_line({:result => 'already_acquired', :name => name}.to_json)
+      end
+
       def released name
         L.debug "released lock: #{name}"
 

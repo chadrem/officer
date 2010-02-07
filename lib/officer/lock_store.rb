@@ -42,14 +42,14 @@ module Officer
     def acquire name, connection, options={}
       lock = @locks[name] ||= Lock.new(name)
 
-      lock.queue << connection unless lock.queue.include? connection
+      if lock.queue.include? connection
+        lock.queue.first == connection ? connection.already_acquired(name) : connection.queued(name, options)
 
-      (@connections[connection] ||= Set.new) << name
-      
-      if lock.queue.first == connection
-        connection.acquired name
       else
-        connection.queued name, options
+        lock.queue << connection
+        (@connections[connection] ||= Set.new) << name
+
+        lock.queue.count == 1 ? connection.acquired(name) : connection.queued(name, options)
       end
     end
 
