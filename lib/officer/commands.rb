@@ -57,7 +57,6 @@ module Officer
       register
 
       def execute
-        L.debug 'executing lock command.'
         Officer::LockStore.instance.acquire @name, @connection, :timeout => @timeout
       end
 
@@ -77,7 +76,6 @@ module Officer
       register
 
       def execute
-        L.debug 'executing unlock command.'
         Officer::LockStore.instance.release @name, @connection
       end
 
@@ -95,7 +93,6 @@ module Officer
       register
 
       def execute
-        L.debug 'executing reset command.'
         Officer::LockStore.instance.reset @connection
       end
     end

@@ -17,7 +17,7 @@ module Officer
         EM::PeriodicTimer.new(5) do
           Officer::LockStore.instance.log_state
         end
-
+        
         EM::start_server @host, @port, Connection::Connection
       end
     end

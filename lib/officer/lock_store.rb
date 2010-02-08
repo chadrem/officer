@@ -16,30 +16,37 @@ module Officer
     def initialize
       @locks = {} # name => Lock
       @connections = {} # Connection => Set(name, ...)
+      @acquire_counter = 0
     end
 
     def log_state
-      L.debug '-----'
+      L.info '-----'
 
-      L.debug 'LOCK STORE:'
-      puts
+      L.info 'LOCK STORE:'
+      L.info ''
       
-      puts "locks:"
+      L.info "locks:"
       @locks.each do |name, lock|
-        puts "#{name}: connections=[#{lock.queue.map{|c| c.object_id}.join(', ')}]"
+        L.info "#{name}: connections=[#{lock.queue.map{|c| c.object_id}.join(', ')}]"
       end
-      puts
+      L.info ''
 
-      puts "Connections:"
+      L.info "Connections:"
       @connections.each do |connection, names|
-        puts "#{connection.object_id}: names=[#{names.to_a.join(', ')}]"
+        L.info "#{connection.object_id}: names=[#{names.to_a.join(', ')}]"
       end
-      puts
+      L.info ''
 
-      L.debug '-----'
+      L.info "Acquire Rate: #{@acquire_counter.to_f / 5}/s"
+      @acquire_counter = 0
+      L.info ''
+
+      L.info '-----'
     end
 
     def acquire name, connection, options={}
+      @acquire_counter += 1
+
       lock = @locks[name] ||= Lock.new(name)
 
       if lock.queue.include? connection

@@ -7,6 +7,7 @@ require 'rubygems'
 require 'active_support'
 require 'eventmachine'
 require 'json'
+require 'daemons'
 
 # Application.
 require 'officer/log'

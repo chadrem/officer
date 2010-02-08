@@ -12,7 +12,8 @@ begin
     gem.authors = ["Chad Remesch"]
     gem.add_development_dependency "eventmachine", ">= 0"
     gem.add_development_dependency "json", ">= 0"
-    gem.add_development_dependency "active_support", ">= 0"
+    gem.add_development_dependency "activesupport", ">= 0"
+    gem.add_development_dependency "daemons", ">= 0"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new

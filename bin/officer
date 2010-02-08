@@ -1,7 +1,15 @@
 #!/usr/bin/env ruby
 
-Dir.chdir File.dirname(__FILE__) + '/../lib'
-
+require 'rubygems'
 require 'officer'
 
-Officer::Server.new.run
+options = {
+  :dir_mode   => :system,
+  :multiple   => false,
+  :monitor    => true
+}
+
+
+Daemons.run_proc('officer', options) do
+  Officer::Server.new.run
+end
