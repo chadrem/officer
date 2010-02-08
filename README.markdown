@@ -13,7 +13,6 @@ It is implemented using Ruby and Eventmachine. Inspiration comes from [elock](ht
     sudo officer --help
     sudo officer start
 
-Notes:
 - The server listens on 0.0.0.0:11500 by default.  In the future this should be configurable.
 - All debugging output goes to stdout for now.  Use 'sudo officer run' to see it.
 
