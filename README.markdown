@@ -11,7 +11,7 @@ It is implemented using Ruby and Eventmachine. Inspiration comes from [elock](ht
 ## Usage
 
     sudo officer --help
-    sudo officer run
+    sudo officer start
 
 Notes:
 - The server listens on 0.0.0.0:11500 by default.  In the future this should be configurable.
