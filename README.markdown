@@ -30,7 +30,7 @@ It is implemented using Ruby and Eventmachine. Inspiration comes from [elock](ht
 
 ### Unlock
 
-	client.unlock 'some_lock_name
+	client.unlock 'some_lock_name'
 
 ### Wrap a block of code in a lock/unlock (with optional 5 second timeout)
 
