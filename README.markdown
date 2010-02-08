@@ -5,21 +5,24 @@ It is implemented using Ruby and Eventmachine. Inspiration comes from [elock](ht
 
 ## Installation
 
-    gem install gemcutter
-    gem install officer
+    sudo gem install gemcutter
+    sudo gem install officer
 
 ## Usage
 
-Start the server using the 'officer' command in a shell.
-It will listen on all interfaces on port 11500.
-All debugging output goes to stdout for now.
+    sudo officer --help
+    sudo officer run
+
+Notes:
+- The server listens on 0.0.0.0:11500 by default.  In the future this should be configurable.
+- All debugging output goes to stdout for now.  Use 'sudo officer run' to see it.
 
 ## Ruby Client
 
 	require 'rubygems'
 	require 'officer'
 
-### Create a client object (:host and :port default to localhost:11500)
+### Create a client object (defaults to localhost:11500)
 
 	client = Officer::Client.new :host => 'localhost', :port => 11500
 
@@ -47,10 +50,11 @@ All debugging output goes to stdout for now.
 
 ## Planned Features
 
-- Option to abort a lock request if there is already a certain number of clients waiting for the lock.
 - Lock statistics.
 - Retrieve the complete list of locks.
 - Retrieve the list of locks for the current connection.
+- Client: Option to abort a lock request if there is already a certain number of clients waiting for the lock.
+- Server: Make IP and port configurable.
 
 ## Copyright
 
