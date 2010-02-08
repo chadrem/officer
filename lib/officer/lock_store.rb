@@ -39,7 +39,6 @@ module Officer
 
       L.info "Acquire Rate: #{@acquire_counter.to_f / 5}/s"
       @acquire_counter = 0
-      L.info ''
 
       L.info '-----'
     end
