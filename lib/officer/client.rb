@@ -76,7 +76,8 @@ module Officer
       result = @socket.gets "\n"
       JSON.parse result.chomp
     rescue
-      reconnect and raise
+      reconnect
+      raise
     end
   end
 
