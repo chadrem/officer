@@ -30,46 +30,46 @@ Run Officer in the background (production mode) and listen on a specific IP and 
 
 ## Ruby Client
 
-	require 'rubygems'
-	require 'officer'
+    require 'rubygems'
+    require 'officer'
 
 ### Create a client object (defaults to localhost:11500)
 
-	client = Officer::Client.new :host => 'localhost', :port => 11500
+    client = Officer::Client.new :host => 'localhost', :port => 11500
 
 ### Lock
 
-	client.lock 'some_lock_name'
+    client.lock 'some_lock_name'
 
 ### Unlock
 
-	client.unlock 'some_lock_name'
+    client.unlock 'some_lock_name'
 
 ### Wrap a block of code in a lock/unlock (with optional 5 second timeout)
 
-	client.with_lock('some_lock_name', :timeout => 5) do
-	  puts 'hello world'
-	end
+    client.with_lock('some_lock_name', :timeout => 5) do
+      puts 'hello world'
+    end
 
 ### Release all locks for this connection
 
-	client.reset
+    client.reset
 
 ### Reconnect (all locks will be released)
 
-	client.reconnect
+    client.reconnect
 
 - Useful if you use Officer with Phusion Passenger and smart spawning.  See [Passenger's documentation](http://www.modrails.com/documentation/Users%20guide%20Apache.html#_smart_spawning_gotcha_1_unintential_file_descriptor_sharing) for more information.
 
 ### Locks
 
-  client.locks
+    client.locks
 
 - Returns the internal state of all the server's locks.
 
 ### Connections
 
-  client.connections
+    client.connections
 
 - Returns the internal state of all the server's connections.
 
