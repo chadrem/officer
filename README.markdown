@@ -9,11 +9,24 @@ It is implemented using Ruby and Eventmachine. Inspiration comes from [elock](ht
 
 ## Usage
 
-    sudo officer --help
-    sudo officer start
+Officer uses the 'daemons' gem to simplify creating long lived background processes.
+Here are some simple examples in case you aren't familiar with it.
 
-- The server listens on 0.0.0.0:11500 by default.  In the future this should be configurable.
-- All debugging output goes to stdout for now.  Use 'sudo officer run' to see it.
+'daemons' help information:
+    sudo officer --help
+
+Officer's help information:
+    sudo officer run -- --help
+
+Run Officer in the foreground with verbose mode enabled (useful for debugging):
+    sudo officer run -- -v
+
+Run Officer in the background (production mode) and listen on a specific IP and port:
+    sudo officer start -- -h 127.0.0.1 -p 9999
+
+- The server listens on 0.0.0.0:11500 by default.
+- All debugging and error output goes to stdout for now.  The daemons gem is configured to log stdout.
+- The daemons gem will create a PID file in /var/run and log files in /var/log when using the 'start' option for background mode.
 
 ## Ruby Client
 
