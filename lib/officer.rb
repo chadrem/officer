@@ -8,6 +8,7 @@ require 'active_support'
 require 'eventmachine'
 require 'json'
 require 'daemons'
+require 'choice'
 
 # Application.
 require 'officer/log'

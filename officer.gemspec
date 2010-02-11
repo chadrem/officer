@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{officer}
-  s.version = "0.3.3"
+  s.version = "0.4.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Chad Remesch"]
-  s.date = %q{2010-02-10}
+  s.date = %q{2010-02-11}
   s.default_executable = %q{officer}
   s.description = %q{Distributed lock server and client written in Ruby and EventMachine}
   s.email = %q{chad@remesch.com}
@@ -56,17 +56,20 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<json>, [">= 0"])
       s.add_development_dependency(%q<activesupport>, [">= 0"])
       s.add_development_dependency(%q<daemons>, [">= 0"])
+      s.add_development_dependency(%q<choice>, [">= 0"])
     else
       s.add_dependency(%q<eventmachine>, [">= 0"])
       s.add_dependency(%q<json>, [">= 0"])
       s.add_dependency(%q<activesupport>, [">= 0"])
       s.add_dependency(%q<daemons>, [">= 0"])
+      s.add_dependency(%q<choice>, [">= 0"])
     end
   else
     s.add_dependency(%q<eventmachine>, [">= 0"])
     s.add_dependency(%q<json>, [">= 0"])
     s.add_dependency(%q<activesupport>, [">= 0"])
     s.add_dependency(%q<daemons>, [">= 0"])
+    s.add_dependency(%q<choice>, [">= 0"])
   end
 end
 

@@ -3,13 +3,45 @@
 require 'rubygems'
 require 'officer'
 
-options = {
+daemon_options = {
   :dir_mode   => :system,
   :multiple   => false,
-  :monitor    => true
+  :monitor    => true,
+  :log_output => true
 }
 
+def parse_command_line
+  if ARGV.include? '--'
+    ARGV.slice! 0..ARGV.index('--')
+  end
 
-Daemons.run_proc('officer', options) do
-  Officer::Server.new.run
+  Choice.options do
+    option :host do
+      short '-h'
+      long '--host=HOST'
+      desc 'The hostname or IP to bind to (default: 0.0.0.0)'
+    end
+
+    option :port do
+      short '-p'
+      long '--port=PORT'
+      desc 'The port to listen on (default: 11500)'
+      cast Integer
+    end
+
+    option :verbose do
+      short '-v'
+      long '--verbose'
+      desc 'Print lock information to stdout every five seconds (default: off)'
+    end
+
+    option :help do
+      long '--help'
+    end
+  end
+end
+
+Daemons.run_proc('officer', daemon_options) do
+  parse_command_line
+  Officer::Server.new(Choice.choices).run
 end

@@ -21,6 +21,7 @@ module Officer
       debug e
       debug e.backtrace.join "\n  "
       debug '-----'
+      debug "ARGV: #{ARGV.inspect}"
     end
 
   private
