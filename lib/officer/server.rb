@@ -1,5 +1,3 @@
-require 'ruby-debug'
-
 module Officer
 
   class Server
