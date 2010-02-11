@@ -9,7 +9,6 @@ module Officer
 
   class GenericError < RuntimeError; end
   class AlreadyConnectedError < GenericError; end
-  class NotConnectedError < GenericError; end
   class LockError < GenericError; end
   class LockTimeoutError < LockError; end
   class UnlockError < GenericError; end
@@ -68,8 +67,6 @@ module Officer
     end
 
     def disconnect
-      raise NotConnectedError unless @socket
-
       @socket.close
       @socket = nil
     end
@@ -78,6 +75,8 @@ module Officer
       @socket.write command + "\n"
       result = @socket.gets "\n"
       JSON.parse result.chomp
+    rescue
+      reconnect and raise
     end
   end
 
