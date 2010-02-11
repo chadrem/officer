@@ -29,24 +29,24 @@ module Officer
       def acquired name
         @timers.delete(name).cancel if @timers[name]
 
-        send_line({:result => 'acquired', :name => name}.to_json)
+        send_result 'acquired', :name => name
       end
 
       def already_acquired name
-        send_line({:result => 'already_acquired', :name => name}.to_json)
+        send_result 'already_acquired', :name => name
       end
 
       def released name
-        send_line({:result => 'released', :name => name}.to_json)
+        send_result 'released', :name => name
       end
 
       def release_failed name
-        send_line({:result => 'release_failed', :name => name}.to_json)
+        send_result 'release_failed', :name => name
       end
 
       def reset_succeeded
         @timers.values.each {|timer| timer.cancel}
-        send_line({:result => 'reset_succeeded'}.to_json)
+        send_result 'reset_succeeded'
       end
 
       def queued name, options={}
@@ -61,15 +61,15 @@ module Officer
 
       def timed_out name
         @timers.delete name
-        send_line({:result => 'timed_out', :name => name}.to_json)
+        send_result 'timed_out', :name => name
       end
 
       def locks locks_hash
-        send_line({:result => 'locks', :value => locks_hash}.to_json)
+        send_result 'locks', :value => locks_hash
       end
 
       def connections conns_hash
-        send_line({:result => 'connections', :value => conns_hash}.to_json)
+        send_result 'connections', :value => conns_hash
       end
     end
 
@@ -87,6 +87,10 @@ module Officer
 
       def send_line line
         send_data "#{line}\n" if @connected
+      end
+
+      def send_result result, options={}
+        send_line({:result => result}.reverse_merge!(options).to_json)
       end
     end
 
