@@ -41,7 +41,7 @@ def parse_command_line
   end
 end
 
-Daemons.run_proc('officer', daemon_options) do
+#Daemons.run_proc('officer', daemon_options) do
   parse_command_line
   Officer::Server.new(Choice.choices).run
-end
+#end

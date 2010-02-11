@@ -33,4 +33,4 @@ module Officer
 end
 
 L = Officer::Log.instance
-LOG_LEVEL = :info
+LOG_LEVEL = :debug

@@ -96,5 +96,21 @@ module Officer
         Officer::LockStore.instance.reset @connection
       end
     end
+
+    class Locks < Base
+      register
+
+      def execute
+        Officer::LockStore.instance.locks @connection
+      end
+    end
+
+    class Connections < Base
+      register
+
+      def execute
+        Officer::LockStore.instance.connections @connection
+      end
+    end
   end
 end

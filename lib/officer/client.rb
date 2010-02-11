@@ -29,11 +29,11 @@ module Officer
     end
 
     def lock name, options={}
-      execute({:command => 'lock', :name => name, :timeout => options[:timeout]}.to_json)
+      execute :command => 'lock', :name => name, :timeout => options[:timeout]
     end
 
     def unlock name
-      execute({:command => 'unlock', :name => name}.to_json)
+      execute :command => 'unlock', :name => name
     end
 
     def with_lock name, options={}
@@ -55,7 +55,15 @@ module Officer
     end
 
     def reset
-      execute({:command => 'reset'}.to_json)
+      execute :command => 'reset'
+    end
+
+    def locks
+      execute :command => 'locks'
+    end
+
+    def connections
+      execute :command => 'connections'
     end
 
   private
@@ -72,6 +80,7 @@ module Officer
     end
 
     def execute command
+      command = command.to_json
       @socket.write command + "\n"
       result = @socket.gets "\n"
       JSON.parse result.chomp

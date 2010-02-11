@@ -61,13 +61,22 @@ Run Officer in the background (production mode) and listen on a specific IP and 
 
 - Useful if you use Officer with Phusion Passenger and smart spawning.  See [Passenger's documentation](http://www.modrails.com/documentation/Users%20guide%20Apache.html#_smart_spawning_gotcha_1_unintential_file_descriptor_sharing) for more information.
 
+### Locks
+
+  client.locks
+
+- Returns the internal state of all the server's locks.
+
+### Connections
+
+  client.connections
+
+- Returns the internal state of all the server's connections.
+
 ## Planned Features
 
-- Lock statistics.
-- Retrieve the complete list of locks.
 - Retrieve the list of locks for the current connection.
 - Client: Option to abort a lock request if there is already a certain number of clients waiting for the lock.
-- Server: Make IP and port configurable.
 
 ## Copyright
 

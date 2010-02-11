@@ -114,6 +114,26 @@ module Officer
 
       connection.timed_out name
     end
+
+    def locks connection
+      locks = {}
+
+      @locks.each do |name, lock|
+        locks[name] = lock.queue.map {|conn| conn.to_host_s}
+      end
+      
+      connection.locks locks
+    end
+
+    def connections connection
+      connections = {}
+
+      @connections.each do |conn, names|
+        connections[conn.to_host_s] = names
+      end
+
+      connection.connections connections
+    end
   end
 
 end

@@ -25,7 +25,7 @@ module Officer
       end
     end
 
-    module LockCallbacks
+    module LockStoreCallbacks
       def acquired name
         @timers.delete(name).cancel if @timers[name]
 
@@ -63,11 +63,24 @@ module Officer
         @timers.delete name
         send_line({:result => 'timed_out', :name => name}.to_json)
       end
+
+      def locks locks_hash
+        send_line({:result => 'locks', :value => locks_hash}.to_json)
+      end
+
+      def connections conns_hash
+        send_line({:result => 'connections', :value => conns_hash}.to_json)
+      end
     end
 
     class Connection < EventMachine::Protocols::LineAndTextProtocol
       include EmCallbacks
-      include LockCallbacks
+      include LockStoreCallbacks
+
+      def to_host_s
+        port, ip = Socket.unpack_sockaddr_in get_peername
+        "#{ip}:#{port}"
+      end
 
     private
       attr_reader :connected
