@@ -29,10 +29,16 @@ def parse_command_line
       cast Integer
     end
 
-    option :verbose do
-      short '-v'
-      long '--verbose'
-      desc 'Print lock information to stdout every five seconds (default: off)'
+    option :log_level do
+      short '-l'
+      long '--log-level'
+      desc 'Set the log level to debug, info, or error (default: error)'
+    end
+
+    option :stats do
+      short '-s'
+      long '--stats'
+      desc 'Log stats every 5 seconds (default: off, requires log level: info)'
     end
 
     option :help do

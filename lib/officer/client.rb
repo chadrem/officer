@@ -2,7 +2,6 @@ require 'socket'
 require 'fcntl'
 
 require 'rubygems'
-require 'active_support'
 require 'json'
 
 module Officer
@@ -15,10 +14,8 @@ module Officer
 
   class Client
     def initialize options={}
-      options.reverse_merge! :host => 'localhost', :port => 11500
-
-      @host = options[:host]
-      @port = options[:port]
+      @host = options[:host] || 'localhost'
+      @port = options[:port] || 11500
 
       connect
     end

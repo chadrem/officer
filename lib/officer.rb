@@ -1,10 +1,11 @@
 # Standard Ruby.
 require 'singleton'
 require 'set'
+require 'logger'
+require 'delegate'
 
 # Gems.
 require 'rubygems'
-require 'active_support'
 require 'eventmachine'
 require 'json'
 require 'daemons'

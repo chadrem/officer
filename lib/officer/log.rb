@@ -1,36 +1,37 @@
 module Officer
 
-  class Log
+  class Log < SimpleDelegator
     include Singleton
 
-    def debug message
-      return unless [:debug].include?(LOG_LEVEL)
+    class << self
+      def debug msg
+        instance.debug msg
+      end
 
-      write message
+      def info msg
+        instance.info msg
+      end
+
+      def error msg
+        instance.error msg
+      end
+
+      def set_log_level level
+        level = case level
+          when 'debug' then Logger::DEBUG
+          when 'info'  then Logger::INFO
+          else Logger::ERROR
+        end
+
+        instance.level = level
+      end
     end
 
-    def info message
-      return unless [:debug, :info].include?(LOG_LEVEL)
+    def initialize
+      @logger = Logger.new STDOUT
 
-      write message
-    end
-
-    def debug_exception e
-      debug '-----'
-      debug "EXCEPTION: "
-      debug e
-      debug e.backtrace.join "\n  "
-      debug '-----'
-      debug "ARGV: #{ARGV.inspect}"
-    end
-
-  private
-    def write message
-      puts message
+      super @logger
     end
   end
-  
-end
 
-L = Officer::Log.instance
-LOG_LEVEL = :debug
+end

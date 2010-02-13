@@ -20,27 +20,29 @@ module Officer
     end
 
     def log_state
-      L.info '-----'
+      l = Officer::Log
 
-      L.info 'LOCK STORE:'
-      L.info ''
-      
-      L.info "locks:"
+      l.info '-----'
+
+      l.info 'LOCK STORE:'
+      l.info ''
+
+      l.info "locks:"
       @locks.each do |name, lock|
-        L.info "#{name}: connections=[#{lock.queue.map{|c| c.object_id}.join(', ')}]"
+        l.info "#{name}: connections=[#{lock.queue.map{|c| c.to_host_s}.join(', ')}]"
       end
-      L.info ''
+      l.info ''
 
-      L.info "Connections:"
+      l.info "Connections:"
       @connections.each do |connection, names|
-        L.info "#{connection.object_id}: names=[#{names.to_a.join(', ')}]"
+        l.info "#{connection.to_host_s}: names=[#{names.to_a.join(', ')}]"
       end
-      L.info ''
+      l.info ''
 
-      L.info "Acquire Rate: #{@acquire_counter.to_f / 5}/s"
+      l.info "Acquire Rate: #{@acquire_counter.to_f / 5}/s"
       @acquire_counter = 0
 
-      L.info '-----'
+      l.info '-----'
     end
 
     def acquire name, connection, options={}
@@ -60,7 +62,7 @@ module Officer
     end
 
     def release name, connection, options={}
-      options.reverse_merge! :callback => true
+      options[:callback] ||= true
 
       lock = @locks[name]
       names = @connections[connection]

@@ -5,16 +5,20 @@ module Officer
       def post_init
         @connected = true
         @timers = {} # name => Timer
+
+        Officer::Log.info "Connected: #{to_host_s}"
       end
 
       def receive_line line
         line.chomp!
 
+        Officer::Log.debug "#{to_host_s} received line: #{line}"
+
         command = Officer::Command::Factory.create line, self
         command.execute
 
       rescue Exception => e
-        L.debug_exception e
+        Officer::Log.error e
         raise
       end
 
@@ -22,6 +26,8 @@ module Officer
         @connected = false
 
         Officer::LockStore.instance.reset self
+
+        Officer::Log.info "Disconnected: #{to_host_s}"
       end
     end
 
@@ -78,19 +84,28 @@ module Officer
       include LockStoreCallbacks
 
       def to_host_s
-        port, ip = Socket.unpack_sockaddr_in get_peername
-        "#{ip}:#{port}"
+        @to_host_s ||= non_cached_to_host_s
       end
 
     private
       attr_reader :connected
 
+      def non_cached_to_host_s
+        port, ip = Socket.unpack_sockaddr_in get_peername
+        "#{ip}:#{port}"
+      end
+
       def send_line line
+        Officer::Log.debug "#{to_host_s} sent line: #{line}"
+
         send_data "#{line}\n" if @connected
       end
 
       def send_result result, options={}
-        send_line({:result => result}.reverse_merge!(options).to_json)
+        params = options.dup
+        params[:result] = result
+
+        send_line params.to_json
       end
     end
 
