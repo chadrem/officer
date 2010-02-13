@@ -18,8 +18,8 @@ Here are some simple examples in case you aren't familiar with it.
 Officer's help information:
     sudo officer run -- --help
 
-Run Officer in the foreground with verbose mode enabled (useful for debugging):
-    sudo officer run -- -v
+Run Officer in the foreground with full logging and statistics:
+    sudo officer run -- -l debug -s
 
 Run Officer in the background (production mode) and listen on a specific IP and port:
     sudo officer start -- -h 127.0.0.1 -p 9999
