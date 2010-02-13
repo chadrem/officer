@@ -33,16 +33,16 @@ Run Officer in the background (production mode) and listen on a specific IP and 
     require 'rubygems'
     require 'officer'
 
-### Create a client object (defaults to localhost:11500)
+### Create a client object
 
     client = Officer::Client.new :host => 'localhost', :port => 11500
 
 #### Options
 
-- :host => Hostname or IP address of the server to bind to.
-- :port => TCP Port to listen on.
-- :timeout => Number of seconds to wait for the lock to become available.  An exception is raised on a timeout.
-- :namespace => Prepend's a namespace to each lock name.  Useful if you use one Officer server with multiple applications.
+- :host => Hostname or IP address of the server to bind to (default: 0.0.0.0).
+- :port => TCP Port to listen on (default: 11500).
+- :timeout => The number of seconds to wait for a lock to become available (default: wait forever).
+- :namespace => Prepend a namespace to each lock name (default: empty string).
 
 ### Lock
 
