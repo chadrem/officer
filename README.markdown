@@ -37,6 +37,13 @@ Run Officer in the background (production mode) and listen on a specific IP and 
 
     client = Officer::Client.new :host => 'localhost', :port => 11500
 
+#### Options
+
+- :host => Hostname or IP address of the server to bind to.
+- :port => TCP Port to listen on.
+- :timeout => Number of seconds to wait for the lock to become available.  An exception is raised on a timeout.
+- :namespace => Prepend's a namespace to each lock name.  Useful if you use one Officer server with multiple applications.
+
 ### Lock
 
     client.lock 'some_lock_name'
@@ -77,7 +84,6 @@ Run Officer in the background (production mode) and listen on a specific IP and 
 
 - Retrieve the list of locks for the current connection.
 - Client: Option to abort a lock request if there is already a certain number of clients waiting for the lock.
-- Client: Namespaced lock names.
 - Server: configure the daemons gem to allow multiple server processes to run on one box.
 - Tests
 
