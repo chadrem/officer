@@ -56,7 +56,7 @@ Options:
 
     client.unlock 'some_lock_name'
 
-### Wrap a block of code in a lock/unlock (with optional 5 second timeout)
+### Lock a block of code
 
     client.with_lock('some_lock_name', :timeout => 5) do
       puts 'hello world'
