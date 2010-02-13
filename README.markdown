@@ -98,7 +98,6 @@ Options:
 ## Planned Features
 
 - Retrieve the list of locks for the current connection.
-- Client: Option to abort a lock request if there is already a certain number of clients waiting for the lock.
 - Server: configure the daemons gem to allow multiple server processes to run on one box.
 - Tests
 
