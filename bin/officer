@@ -38,7 +38,7 @@ def parse_command_line
     option :stats do
       short '-s'
       long '--stats'
-      desc 'Log stats every 5 seconds (default: off, requires log level: info)'
+      desc 'Log stats every 5 seconds (default: off, required log level: info)'
     end
 
     option :help do
