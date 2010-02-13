@@ -41,12 +41,16 @@ Run Officer in the background (production mode) and listen on a specific IP and 
 
 - :host => Hostname or IP address of the server to bind to (default: 0.0.0.0).
 - :port => TCP Port to listen on (default: 11500).
-- :timeout => The number of seconds to wait for a lock to become available (default: wait forever).
-- :namespace => Prepend a namespace to each lock name (default: empty string).
 
 ### Lock
 
     client.lock 'some_lock_name'
+
+#### Options
+
+- :timeout => The number of seconds to wait for a lock to become available (default: wait forever).
+- :namespace => Prepend a namespace to each lock name (default: empty string).
+- :queue_max => If the lock queue length is greater than :queue_max then don't wait for the lock.
 
 ### Unlock
 
@@ -57,6 +61,10 @@ Run Officer in the background (production mode) and listen on a specific IP and 
     client.with_lock('some_lock_name', :timeout => 5) do
       puts 'hello world'
     end
+
+#### Options
+
+- Same options as the above Lock command.
 
 ### Release all locks for this connection
 
