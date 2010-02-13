@@ -37,7 +37,7 @@ Run Officer in the background (production mode) and listen on a specific IP and 
 
     client = Officer::Client.new :host => 'localhost', :port => 11500
 
-#### Options
+Options:
 
 - :host => Hostname or IP address of the server to bind to (default: 0.0.0.0).
 - :port => TCP Port to listen on (default: 11500).
@@ -46,7 +46,7 @@ Run Officer in the background (production mode) and listen on a specific IP and 
 
     client.lock 'some_lock_name'
 
-#### Options
+Options:
 
 - :timeout => The number of seconds to wait for a lock to become available (default: wait forever).
 - :namespace => Prepend a namespace to each lock name (default: empty string).
@@ -62,7 +62,7 @@ Run Officer in the background (production mode) and listen on a specific IP and 
       puts 'hello world'
     end
 
-#### Options
+Options:
 
 - Same options as the above Lock command.
 
