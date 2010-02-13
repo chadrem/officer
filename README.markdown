@@ -25,8 +25,8 @@ Run Officer in the background (production mode) and listen on a specific IP and 
     sudo officer start -- -h 127.0.0.1 -p 9999
 
 - The server listens on 0.0.0.0:11500 by default.
-- All debugging and error output goes to stdout for now.  The daemons gem is configured to log to stdout which gets redirected to /var/log/officer.output on OSX and Linux.
-- The daemons gem will create a PID file in /var/run and log files in /var/log when using the 'start' option for background mode.
+- All debugging and error output goes to stdout for now.
+- The daemons gem will create a pid file in /var/run and redirect stdout to /var/log/officer.output when using the 'start' option for background mode.
 
 ## Ruby Client
 
