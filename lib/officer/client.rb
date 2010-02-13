@@ -10,12 +10,14 @@ module Officer
   class AlreadyConnectedError < GenericError; end
   class LockError < GenericError; end
   class LockTimeoutError < LockError; end
+  class LockQueuedMaxError < LockError; end
   class UnlockError < GenericError; end
 
   class Client
     def initialize options={}
       @host = options[:host] || 'localhost'
       @port = options[:port] || 11500
+      @namespace = options[:namespace]
 
       connect
     end
@@ -26,11 +28,12 @@ module Officer
     end
 
     def lock name, options={}
-      execute :command => 'lock', :name => name, :timeout => options[:timeout]
+      execute :command => 'lock', :name => name_with_ns(name),
+        :timeout => options[:timeout], :queue_max => options[:queue_max]
     end
 
     def unlock name
-      execute :command => 'unlock', :name => name
+      execute :command => 'unlock', :name => name_with_ns(name)
     end
 
     def with_lock name, options={}
@@ -38,6 +41,7 @@ module Officer
       result = response['result']
       
       raise LockTimeoutError if result == 'timed_out'
+      raise LockQueuedMaxError if result == 'queue_maxed'
       raise LockError unless %w(acquired already_acquired).include?(result)
 
       begin
@@ -84,6 +88,10 @@ module Officer
     rescue
       reconnect
       raise
+    end
+
+    def name_with_ns name
+      @namespace ? "#{@namespace}:#{name}" : name
     end
   end
 

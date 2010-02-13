@@ -68,18 +68,21 @@ module Officer
       register
 
       def execute
-        Officer::LockStore.instance.acquire @name, @connection, :timeout => @timeout
+        Officer::LockStore.instance.acquire @name, @connection,
+          :timeout => @timeout, :queue_max => @queue_max
       end
 
     private
       def setup
         @name = @request['name']
         @timeout = @request['timeout']
+        @queue_max = @request['queue_max']
       end
 
       def valid?
         require_string @request['name']
         optional_positive_integer @request['timeout']
+        optional_positive_integer @request['queue_max']
       end
     end
 

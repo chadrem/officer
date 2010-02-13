@@ -77,6 +77,10 @@ module Officer
       def connections conns_hash
         send_result 'connections', :value => conns_hash
       end
+
+      def queue_maxed name
+        send_result 'queue_maxed', :name => name
+      end
     end
 
     class Connection < EventMachine::Protocols::LineAndTextProtocol

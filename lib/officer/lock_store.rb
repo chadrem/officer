@@ -46,6 +46,15 @@ module Officer
     end
 
     def acquire name, connection, options={}
+      if options[:queue_max]
+        if @locks[name] && !@locks[name].queue.include?(connection)
+          if @locks[name].queue.length >= options[:queue_max]
+            connection.queue_maxed name
+            return
+          end
+        end
+      end
+
       @acquire_counter += 1
 
       lock = @locks[name] ||= Lock.new(name)
