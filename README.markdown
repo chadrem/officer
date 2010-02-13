@@ -77,6 +77,9 @@ Run Officer in the background (production mode) and listen on a specific IP and 
 
 - Retrieve the list of locks for the current connection.
 - Client: Option to abort a lock request if there is already a certain number of clients waiting for the lock.
+- Client: Namespaced lock names.
+- Server: configure the daemons gem to allow multiple server processes to run on one box.
+- Tests
 
 ## Copyright
 
