@@ -42,6 +42,7 @@ Options:
 - :host => Hostname or IP address of the server to bind to (default: 0.0.0.0).
 - :port => TCP Port to listen on (default: 11500).
 
+
 ### Lock
 
     client.lock 'some_lock_name'
@@ -52,9 +53,11 @@ Options:
 - :namespace => Prepend a namespace to each lock name (default: empty string).
 - :queue_max => If the lock queue length is greater than :queue_max then don't wait for the lock.
 
+
 ### Unlock
 
     client.unlock 'some_lock_name'
+
 
 ### Lock a block of code
 
@@ -66,9 +69,11 @@ Options:
 
 - Same options as the above Lock command.
 
+
 ### Release all locks for this connection
 
     client.reset
+
 
 ### Reconnect (all locks will be released)
 
@@ -76,13 +81,15 @@ Options:
 
 - Useful if you use Officer with Phusion Passenger and smart spawning.  See [Passenger's documentation](http://www.modrails.com/documentation/Users%20guide%20Apache.html#_smart_spawning_gotcha_1_unintential_file_descriptor_sharing) for more information.
 
-### Locks
+
+### Show locks
 
     client.locks
 
 - Returns the internal state of all the server's locks.
 
-### Connections
+
+### Show connections
 
     client.connections
 
