@@ -126,5 +126,14 @@ module Officer
         Officer::LockStore.instance.connections @connection
       end
     end
+
+    class MyLocks < Base
+      register
+
+      def execute
+        Officer::LockStore.instance.my_locks @connection
+      end
+    end
+
   end
 end

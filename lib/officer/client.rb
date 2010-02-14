@@ -28,12 +28,14 @@ module Officer
     end
 
     def lock name, options={}
-      execute :command => 'lock', :name => name_with_ns(name),
+      result = execute :command => 'lock', :name => name_with_ns(name),
         :timeout => options[:timeout], :queue_max => options[:queue_max]
+      strip_ns_from_hash result, 'name'
     end
 
     def unlock name
-      execute :command => 'unlock', :name => name_with_ns(name)
+      result = execute :command => 'unlock', :name => name_with_ns(name)
+      strip_ns_from_hash result, 'name'
     end
 
     def with_lock name, options={}
@@ -67,6 +69,12 @@ module Officer
       execute :command => 'connections'
     end
 
+    def my_locks
+      result = execute :command => 'my_locks'
+      result['value'] = result['value'].map {|name| strip_ns(name)}
+      result
+    end
+
   private
     def connect
       raise AlreadyConnectedError if @socket
@@ -92,6 +100,15 @@ module Officer
 
     def name_with_ns name
       @namespace ? "#{@namespace}:#{name}" : name
+    end
+
+    def strip_ns name
+      @namespace ? name.gsub(Regexp.new("^#{@namespace}:"), '') : name
+    end
+
+    def strip_ns_from_hash hash, key
+      hash[key] = strip_ns(hash[key])
+      hash
     end
   end
 

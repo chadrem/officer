@@ -81,6 +81,10 @@ module Officer
       def queue_maxed name
         send_result 'queue_maxed', :name => name
       end
+
+      def my_locks names
+        send_result 'my_locks', :value => names
+      end
     end
 
     class Connection < EventMachine::Protocols::LineAndTextProtocol

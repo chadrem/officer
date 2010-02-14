@@ -140,10 +140,15 @@ module Officer
       connections = {}
 
       @connections.each do |conn, names|
-        connections[conn.to_host_s] = names
+        connections[conn.to_host_s] = names.to_a
       end
 
       connection.connections connections
+    end
+
+    def my_locks connection
+      my_locks = @connections[connection] ? @connections[connection].to_a : []
+      connection.locks my_locks
     end
   end
 

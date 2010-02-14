@@ -95,9 +95,14 @@ Options:
 
 - Returns the internal state of all the server's connections.
 
+
+### Show the locks currently being held for this connection.
+
+    client.my_locks
+
+
 ## Planned Features
 
-- Retrieve the list of locks for the current connection.
 - Server: configure the daemons gem to allow multiple server processes to run on one box.
 - Tests
 
