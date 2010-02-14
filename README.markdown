@@ -96,7 +96,7 @@ Options:
 - Returns the internal state of all the server's connections.
 
 
-### Show the locks currently being held for this connection.
+### Show my locks
 
     client.my_locks
 
