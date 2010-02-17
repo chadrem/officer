@@ -120,6 +120,8 @@ module Officer
       lock = @locks[name]
       names = @connections[connection]
 
+      return if lock.queue.first == connection # Don't timeout- already have the lock.
+
       lock.queue.delete connection
       names.delete name
 

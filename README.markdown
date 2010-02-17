@@ -51,7 +51,7 @@ Options:
 
 - :timeout => The number of seconds to wait for a lock to become available (default: wait forever).
 - :namespace => Prepend a namespace to each lock name (default: empty string).
-- :queue_max => If the lock queue length is greater than :queue_max then don't wait for the lock.
+- :queue_max => If the lock queue length is greater than :queue_max then don't wait for the lock (default: infinite).
 
 
 ### Unlock
