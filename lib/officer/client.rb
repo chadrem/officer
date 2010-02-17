@@ -84,7 +84,7 @@ module Officer
     end
 
     def disconnect
-      @socket.close
+      @socket.close if @socket
       @socket = nil
     end
 
