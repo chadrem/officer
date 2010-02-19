@@ -1,12 +1,18 @@
 module Officer
 
+  class LockQueue < Array
+    def to_host_a
+      map {|conn| conn.to_host_s}
+    end
+  end
+
   class Lock
     attr_reader :name
     attr_reader :queue
 
     def initialize name
       @name = name
-      @queue = []
+      @queue = LockQueue.new
     end
   end
 
@@ -29,7 +35,7 @@ module Officer
 
       l.info "locks:"
       @locks.each do |name, lock|
-        l.info "#{name}: connections=[#{lock.queue.map{|c| c.to_host_s}.join(', ')}]"
+        l.info "#{name}: connections=[#{lock.queue.to_host_a.join(', ')}]"
       end
       l.info ''
 
@@ -47,11 +53,11 @@ module Officer
 
     def acquire name, connection, options={}
       if options[:queue_max]
-        if @locks[name] && !@locks[name].queue.include?(connection)
-          if @locks[name].queue.length >= options[:queue_max]
-            connection.queue_maxed name
-            return
-          end
+        lock = @locks[name]
+
+        if lock && !lock.queue.include?(connection) && lock.queue.length >= options[:queue_max]
+          connection.queue_maxed name, :queue => lock.queue.to_host_a
+          return
         end
       end
 
@@ -125,14 +131,14 @@ module Officer
       lock.queue.delete connection
       names.delete name
 
-      connection.timed_out name
+      connection.timed_out name, :queue => lock.queue.to_host_a
     end
 
     def locks connection
       locks = {}
 
       @locks.each do |name, lock|
-        locks[name] = lock.queue.map {|conn| conn.to_host_s}
+        locks[name] = lock.queue.to_host_a
       end
       
       connection.locks locks

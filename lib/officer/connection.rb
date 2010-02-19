@@ -65,9 +65,9 @@ module Officer
         end
       end
 
-      def timed_out name
+      def timed_out name, options={}
         @timers.delete name
-        send_result 'timed_out', :name => name
+        send_result 'timed_out', :name => name, :queue => options[:queue]
       end
 
       def locks locks_hash
@@ -78,8 +78,8 @@ module Officer
         send_result 'connections', :value => conns_hash
       end
 
-      def queue_maxed name
-        send_result 'queue_maxed', :name => name
+      def queue_maxed name, options={}
+        send_result 'queue_maxed', :name => name, :queue => options[:queue]
       end
 
       def my_locks names
