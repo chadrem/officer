@@ -104,7 +104,6 @@ Options:
 ## Planned Features
 
 - Server: configure the daemons gem to allow multiple server processes to run on one box.
-- Tests
 
 ## Copyright
 
