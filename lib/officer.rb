@@ -10,6 +10,7 @@ require 'eventmachine'
 require 'json'
 require 'daemons'
 require 'choice'
+# require 'ruby-debug'
 
 # Application.
 require 'officer/log'

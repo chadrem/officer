@@ -77,7 +77,9 @@ module Officer
     end
 
     def release name, connection, options={}
-      options[:callback] ||= true
+      if options[:callback].nil?
+        options[:callback] = true
+      end
 
       lock = @locks[name]
       names = @connections[connection]
