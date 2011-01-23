@@ -1,6 +1,6 @@
-# Officer - Distributed Lock Server and Client
+# Officer - Ruby lock server and client built on EventMachine
 
-It is implemented using Ruby and Eventmachine. Inspiration comes from [elock](http://github.com/dustin/elock).
+Officer is designed to help you coordinate distributed processes and avoid race conditions.  Inspiration comes from [elock](http://github.com/dustin/elock).
 
 ## Installation
 

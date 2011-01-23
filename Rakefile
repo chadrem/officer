@@ -7,8 +7,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "officer"
   gem.homepage = "http://github.com/chadrem/officer"
   gem.license = "MIT"
-  gem.summary = %Q{Distributed lock server and client}
-  gem.description = %Q{Distributed lock server and client written in Ruby and EventMachine}
+  gem.summary = %Q{Ruby lock server and client built on EventMachine.}
+  gem.description = %Q{Officer is designed to help you coordinate distributed processes and avoid race conditions.}
   gem.email = "chad@remesch.com"
   gem.authors = ["Chad Remesch"]
   # Include your dependencies below. Runtime dependencies are required when using your gem,
