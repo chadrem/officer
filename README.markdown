@@ -2,6 +2,8 @@
 
 Officer is designed to help you coordinate distributed processes and avoid race conditions.  Inspiration comes from [elock](http://github.com/dustin/elock).
 
+Read more in my blog post: http://remesch.com/officer-the-ruby-lock-server-and-client
+
 ## Installation
 
     gem install officer
