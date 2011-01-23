@@ -25,7 +25,7 @@ Run Officer in the foreground with full logging and statistics:
 Run Officer in the background (production mode) and listen on a specific IP and port:
     sudo officer start -- -h 127.0.0.1 -p 9999
 
-Other notes:
+### Other notes:
 
 - The server listens on 0.0.0.0:11500 by default.
 - All debugging and error output goes to stdout for now.
