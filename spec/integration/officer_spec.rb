@@ -190,6 +190,12 @@ describe Officer do
           )
         end
 
+        it "should allow a client to set an instant timeout when obtaining a lock using the block syntax" do
+          lambda {
+            @client2.with_lock("testlock", :timeout => 0){}
+          }.should raise_error(Officer::LockTimeoutError, "queue=127.0.0.1:#{@client1_src_port}")
+        end
+
         it "should allow a client to set a positive integer timeout when obtaining a lock" do
           time = Benchmark.realtime do
             @client2.lock("testlock", :timeout => 1).should eq(
@@ -203,14 +209,6 @@ describe Officer do
 
       describe "OPTION: queue_max" do
         before do
-        end
-
-        after do
-          @thread1.terminate
-          @thread2.terminate
-        end
-
-        it "should allow a client to abort when obtaining a lock if too many other clients are waiting for the same lock" do
           @client1 = Officer::Client.new
           @client1.lock("testlock")
 
@@ -231,15 +229,29 @@ describe Officer do
           @thread1.status.should eq("sleep")
           @thread2.status.should eq("sleep")
 
-          client1_src_port = @client1.instance_variable_get('@socket').addr[1]
-          client2_src_port = @client2.instance_variable_get('@socket').addr[1]
-          client3_src_port = @client3.instance_variable_get('@socket').addr[1]
+          @client1_src_port = @client1.instance_variable_get('@socket').addr[1]
+          @client2_src_port = @client2.instance_variable_get('@socket').addr[1]
+          @client3_src_port = @client3.instance_variable_get('@socket').addr[1]
 
           @client4 = Officer::Client.new
+        end
+
+        after do
+          @thread1.terminate
+          @thread2.terminate
+        end
+
+        it "should allow a client to abort lock acquisition if the wait queue is too long" do
           @client4.lock("testlock", :queue_max => 3).should eq(
             {"result" => "queue_maxed", "name" => "testlock", "queue" =>
-              ["127.0.0.1:#{client1_src_port}", "127.0.0.1:#{client2_src_port}", "127.0.0.1:#{client3_src_port}"]}
+              ["127.0.0.1:#{@client1_src_port}", "127.0.0.1:#{@client2_src_port}", "127.0.0.1:#{@client3_src_port}"]}
           )
+        end
+
+        it "should allow a client to abort lock acquisition if the wait queue is too long (block syntax)" do
+          lambda {
+            @client4.with_lock("testlock", :queue_max => 3) {}
+          }.should raise_error(Officer::LockQueuedMaxError)
         end
       end
 
