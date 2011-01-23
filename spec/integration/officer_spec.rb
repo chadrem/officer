@@ -1,5 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 require "benchmark"
+require "json"
 
 describe Officer do
   before do
@@ -163,6 +164,15 @@ describe Officer do
         @client.unlock("testlock")
         @client.my_locks.should eq({"value"=>[], "result"=>"my_locks"})
       end
+
+      it "should inform the client they already have a lock if they previously locked it" do
+        @client.lock("testlock")
+        @client.lock("testlock").should eq({"result" => "already_acquired", "name" => "testlock"})
+      end
+
+      it "should inform the client they don't have a lock if they try to unlock a lock that they don't have" do
+        @client.unlock("testlock").should eq({"result" => "release_failed", "name" => "testlock"})
+      end
     end
 
     describe "locking options" do
@@ -270,6 +280,30 @@ describe Officer do
             @client.locks["value"]["myapp:testlock"].should_not eq(nil)
           end
         end
+      end
+    end
+
+    describe "EXPERIMENTAL: server support for non-blocking clients attempting to release a queued lock request" do
+      before do
+        @client = Officer::Client.new
+
+        @socket = TCPSocket.new "127.0.0.1", 11500
+        @socket = TCPSocket.new "127.0.0.1", 11500
+      end
+
+      after do
+        @client.send("disconnect")
+        @client = nil
+
+        @socket.close
+        @socket = nil
+      end
+
+      it "should inform the client that their request has been de-queued" do
+        @client.lock("testlock")
+        @socket.write("{\"command\":\"lock\",\"name\":\"testlock\"}\n")
+        @socket.write("{\"command\":\"unlock\",\"name\":\"testlock\"}\n")
+        JSON.parse(@socket.gets("\n").chomp).should eq({"result" => "released", "name" => "testlock"})
       end
     end
   end
