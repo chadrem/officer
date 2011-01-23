@@ -190,7 +190,7 @@ describe Officer do
           )
         end
 
-        it "should allow a client to set an instant timeout when obtaining a lock using the block syntax" do
+        it "should allow a client to set an instant timeout when obtaining a lock (block syntax)" do
           lambda {
             @client2.with_lock("testlock", :timeout => 0){}
           }.should raise_error(Officer::LockTimeoutError, "queue=127.0.0.1:#{@client1_src_port}")
