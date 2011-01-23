@@ -4,8 +4,7 @@ It is implemented using Ruby and Eventmachine. Inspiration comes from [elock](ht
 
 ## Installation
 
-    sudo gem install gemcutter
-    sudo gem install officer
+    gem install officer
 
 ## Usage
 
