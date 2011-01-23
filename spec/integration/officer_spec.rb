@@ -24,7 +24,7 @@ describe Officer do
 
     it "should allow a client to request and release a lock using block syntax" do
       @client.with_lock("testlock") do
-        @client.my_locks.should eq({"value"=>["testlock"], "result"=>"locks"})
+        @client.my_locks.should eq({"value"=>["testlock"], "result"=>"my_locks"})
       end
     end
   end
@@ -42,9 +42,9 @@ describe Officer do
     it "should allow a client to reset all of its locks (release them all)" do
       @client.lock("testlock1")
       @client.lock("testlock2")
-      @client.my_locks.should eq({"value"=>["testlock1", "testlock2"], "result"=>"locks"})
+      @client.my_locks.should eq({"value"=>["testlock1", "testlock2"], "result"=>"my_locks"})
       @client.reset
-      @client.my_locks.should eq({"value"=>[], "result"=>"locks"})
+      @client.my_locks.should eq({"value"=>[], "result"=>"my_locks"})
     end
   end
 
@@ -62,7 +62,7 @@ describe Officer do
       original_socket = @client.instance_variable_get("@socket")
       @client.reconnect
       @client.instance_variable_get("@socket").should_not eq(original_socket)
-      @client.my_locks.should eq({"value"=>[], "result"=>"locks"})
+      @client.my_locks.should eq({"value"=>[], "result"=>"my_locks"})
     end
   end
 
@@ -141,7 +141,8 @@ describe Officer do
     end
 
     it "should allow a client to request its locks" do
-      @client.my_locks.should eq({"value"=>[], "result"=>"locks"})
+      @client.lock("testlock")
+      @client.my_locks.should eq({"value"=>["testlock"], "result"=>"my_locks"})
     end
   end
 
@@ -158,9 +159,9 @@ describe Officer do
 
       it "should allow a client to request and release a lock" do
         @client.lock("testlock").should eq({"result" => "acquired", "name" => "testlock"})
-        @client.my_locks.should eq({"value"=>["testlock"], "result"=>"locks"})
+        @client.my_locks.should eq({"value"=>["testlock"], "result"=>"my_locks"})
         @client.unlock("testlock")
-        @client.my_locks.should eq({"value"=>[], "result"=>"locks"})
+        @client.my_locks.should eq({"value"=>[], "result"=>"my_locks"})
       end
     end
 

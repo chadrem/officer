@@ -158,7 +158,7 @@ module Officer
 
     def my_locks connection
       my_locks = @connections[connection] ? @connections[connection].to_a : []
-      connection.locks my_locks
+      connection.my_locks my_locks
     end
   end
 
