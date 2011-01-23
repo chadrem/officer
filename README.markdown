@@ -100,10 +100,6 @@ Options:
     client.my_locks
 
 
-## Planned Features
-
-- Server: configure the daemons gem to allow multiple server processes to run on one box.
-
 ## Copyright
 
 Copyright (c) 2010 Chad Remesch. See LICENSE for details.
