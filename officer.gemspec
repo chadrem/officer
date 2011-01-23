@@ -5,13 +5,13 @@
 
 Gem::Specification.new do |s|
   s.name = %q{officer}
-  s.version = "0.8.4"
+  s.version = "0.8.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Chad Remesch"]
   s.date = %q{2011-01-22}
   s.default_executable = %q{officer}
-  s.description = %q{Distributed lock server and client written in Ruby and EventMachine}
+  s.description = %q{Officer is designed to help you coordinate distributed processes and avoid race conditions.}
   s.email = %q{chad@remesch.com}
   s.executables = ["officer"]
   s.extra_rdoc_files = [
@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
     "README.markdown"
   ]
   s.files = [
+    ".autotest",
     ".document",
     ".rspec",
     "LICENSE",
@@ -41,7 +42,7 @@ Gem::Specification.new do |s|
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.7}
-  s.summary = %q{Distributed lock server and client}
+  s.summary = %q{Ruby lock server and client built on EventMachine.}
   s.test_files = [
     "spec/integration/officer_spec.rb",
     "spec/spec_helper.rb"
