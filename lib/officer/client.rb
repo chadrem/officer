@@ -42,7 +42,7 @@ module Officer
       response = lock name, options
       result = response['result']
       queue = (response['queue'] || []).join ','
-      
+
       raise LockTimeoutError.new("queue=#{queue}") if result == 'timed_out'
       raise LockQueuedMaxError.new("queue=#{queue}") if result == 'queue_maxed'
       raise LockError unless %w(acquired already_acquired).include?(result)
