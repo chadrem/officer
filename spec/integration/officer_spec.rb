@@ -44,7 +44,11 @@ describe Officer do
     it "should allow a client to reset all of its locks (release them all)" do
       @client.lock("testlock1")
       @client.lock("testlock2")
-      @client.my_locks.should eq({"value"=>["testlock1", "testlock2"], "result"=>"my_locks"})
+      actual = @client.my_locks
+      expected = {"value"=>["testlock1", "testlock2"], "result"=>"my_locks"}
+      actual.class.should eq(Hash)
+      actual["value"].sort.should eq(expected["value"].sort)
+      actual["result"].should eq(expected["result"])
       @client.reset
       @client.my_locks.should eq({"value"=>[], "result"=>"my_locks"})
     end
@@ -92,8 +96,8 @@ describe Officer do
     it "should allow a client to see all the connections to a server" do
       connections = @client2.connections
 
-      connections["value"]["127.0.0.1:#{@client1_src_port}"].should eq(["client1_testlock1", "client1_testlock2"])
-      connections["value"]["127.0.0.1:#{@client2_src_port}"].should eq(["client2_testlock1", "client2_testlock2"])
+      connections["value"]["127.0.0.1:#{@client1_src_port}"].sort.should eq(["client1_testlock1", "client1_testlock2"].sort)
+      connections["value"]["127.0.0.1:#{@client2_src_port}"].sort.should eq(["client2_testlock1", "client2_testlock2"].sort)
       connections["value"].keys.length.should eq(2)
       connections["result"].should eq("connections")
     end
