@@ -3,6 +3,7 @@ require 'singleton'
 require 'set'
 require 'logger'
 require 'delegate'
+require 'thread'
 
 # Gems.
 require 'rubygems'

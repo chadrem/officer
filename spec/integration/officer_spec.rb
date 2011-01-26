@@ -1,16 +1,17 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-require "benchmark"
-require "json"
 
 describe Officer do
   before do
-    @server_thread = Thread.new do
-      Officer::Server.new.run
-    end
+    @server = Officer::Server.new :stats => true # :log_level => "debug"
+    @server.instance_variable_set("@enable_shutdown_port", true)
+    @server_thread = Thread.new {@server.run}
+    while !@server.running?; end
   end
 
   after do
-    @server_thread.terminate
+    shutdown_socket = TCPSocket.new("127.0.0.1", 11501)
+    shutdown_socket.close
+    while @server.running?; end
   end
 
   describe "COMMAND: with_lock" do
@@ -225,37 +226,35 @@ describe Officer do
           @thread1 = Thread.new {
             @client2 = Officer::Client.new
             @client2.lock("testlock")
-            raise "This should never execute since the lock request should block"
           }
 
           @thread2 = Thread.new {
             @client3 = Officer::Client.new
             @client3.lock("testlock")
-            raise "This should never execute since the lock request should block"
           }
 
-          sleep(0.25)  # Allow thread 1 & 2 time to run.
-
-          @thread1.status.should eq("sleep")
-          @thread2.status.should eq("sleep")
+          @client4 = Officer::Client.new
+          while @client4.locks["value"]["testlock"].count != 3; end
 
           @client1_src_port = @client1.instance_variable_get('@socket').addr[1]
           @client2_src_port = @client2.instance_variable_get('@socket').addr[1]
           @client3_src_port = @client3.instance_variable_get('@socket').addr[1]
-
-          @client4 = Officer::Client.new
         end
 
         after do
-          @thread1.terminate
-          @thread2.terminate
         end
 
         it "should allow a client to abort lock acquisition if the wait queue is too long" do
-          @client4.lock("testlock", :queue_max => 3).should eq(
-            {"result" => "queue_maxed", "name" => "testlock", "queue" =>
-              ["127.0.0.1:#{@client1_src_port}", "127.0.0.1:#{@client2_src_port}", "127.0.0.1:#{@client3_src_port}"]}
-          )
+          actual = @client4.lock("testlock", :queue_max => 3)
+          expected = {
+            "result" => "queue_maxed",
+            "name" => "testlock",
+            "queue" => ["127.0.0.1:#{@client1_src_port}", "127.0.0.1:#{@client2_src_port}", "127.0.0.1:#{@client3_src_port}"]
+          }
+          actual.class.should eq(Hash)
+          actual["result"].should eq(expected["result"])
+          actual["name"].should eq(expected["name"])
+          actual["queue"].sort.should eq(expected["queue"].sort)
         end
 
         it "should allow a client to abort lock acquisition if the wait queue is too long (block syntax)" do
