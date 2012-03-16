@@ -33,7 +33,7 @@ module Officer
         option :socket_type do
           short '-o'
           long '--socket-type=OPTION'
-          desc 'TCP (default) or UNIX'
+          desc 'TCP or UNIX (default: TCP)'
           default 'TCP'
           validate /^(TCP|UNIX)$/
         end
@@ -41,7 +41,7 @@ module Officer
         option :socket_file do
           short '-f'
           long '--socket-file=FILE'
-          desc 'Full path and name to the UNIX socket file (only used if --socket-type=UNIX, default: /tmp/officer.sock)'
+          desc "Full path and name to the UNIX domain socket file (only used with '-o UNIX', default: /tmp/officer.sock)"
         end
 
         option :port do

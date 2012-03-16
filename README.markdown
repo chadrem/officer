@@ -17,7 +17,7 @@ Help information:
 
     Usage: officer [-hofplsd]
         -h, --host=HOST                  The hostname or IP to bind to (default: 0.0.0.0)
-        -o, --socket-type=OPTION         TCP (default) or UNIX
+        -o, --socket-type=OPTION         TCP or UNIX (default: TCP)
         -f, --socket-file=FILE           Full path and name to the UNIX socket file (only used if --socket-type=UNIX, default: /tmp/officer.sock)
         -p, --port=PORT                  The port to listen on (default: 11500)
         -l, --log-level                  Set the log level to debug, info, or error (default: error)
