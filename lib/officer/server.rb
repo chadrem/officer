@@ -13,8 +13,10 @@ module Officer
 
       @params = params
 
+      params[:socket_type] ||= 'TCP'
       params[:port] ||= 11500
       params[:host] ||= '0.0.0.0'
+      params[:socket_file] ||= '/tmp/officer.sock'
       params[:stats] ||= false
       params[:log_level] ||= 'error'
 
@@ -36,7 +38,11 @@ module Officer
           EM::start_server '127.0.0.1', 11501, ShutdownConnection
         end
 
-        EM::start_server @params[:host], @params[:port], Connection::Connection
+        if @params[:socket_type] == 'TCP'
+          EM::start_server @params[:host], @params[:port], Connection::Connection
+        else
+          EM::start_unix_domain_server @params[:socket_file], Connection::Connection
+        end
 
         set_running(true)
       end

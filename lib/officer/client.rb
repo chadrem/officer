@@ -15,6 +15,8 @@ module Officer
 
   class Client
     def initialize options={}
+      @socket_type = options[:socket_type] || 'TCP'
+      @socket_file = options[:socket_file] || '/tmp/officer.sock'
       @host = options[:host] || 'localhost'
       @port = options[:port] || 11500
       @namespace = options[:namespace]
@@ -85,7 +87,15 @@ module Officer
     def connect
       raise AlreadyConnectedError if @socket
 
-      @socket = TCPSocket.new @host, @port.to_i
+      case @socket_type
+      when 'TCP'
+        @socket = TCPSocket.new @host, @port.to_i
+      when 'UNIX'
+        @socket = UNIXSocket.new @socket_file
+      else
+        raise "Invalid socket type: #{@socket_type}"
+      end
+
       @socket.fcntl Fcntl::F_SETFD, Fcntl::FD_CLOEXEC
     end
 

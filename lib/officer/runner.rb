@@ -30,6 +30,20 @@ module Officer
           desc 'The hostname or IP to bind to (default: 0.0.0.0)'
         end
 
+        option :socket_type do
+          short '-o'
+          long '--socket-type=OPTION'
+          desc 'TCP (default) or UNIX'
+          default 'TCP'
+          validate /^(TCP|UNIX)$/
+        end
+
+        option :socket_file do
+          short '-f'
+          long '--socket-file=FILE'
+          desc 'Full path and name to the UNIX socket file (only used if --socket-type=UNIX, default: /tmp/officer.sock)'
+        end
+
         option :port do
           short '-p'
           long '--port=PORT'

@@ -92,7 +92,12 @@ module Officer
       include LockStoreCallbacks
 
       def to_host_s
-        @to_host_s ||= non_cached_to_host_s
+        begin
+          @to_host_s ||= non_cached_to_host_s
+        rescue ArgumentError
+          # we assume unix socket, so no ip/port info
+          @to_host_s ||= 'UNIX socket client'
+        end
       end
 
     private
