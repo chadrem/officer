@@ -87,6 +87,13 @@ Options:
 - Useful if you use Officer with Phusion Passenger and smart spawning.  See [Passenger's documentation](http://www.modrails.com/documentation/Users%20guide%20Apache.html#_smart_spawning_gotcha_1_unintential_file_descriptor_sharing) for more information.
 
 
+### Disconnect
+
+    client.disconnect
+
+- Close the connection to the server.
+
+
 ### Show locks
 
     client.locks
