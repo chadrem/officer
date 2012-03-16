@@ -11,27 +11,34 @@ Read more in my blog post: [http://remesch.com/officer-the-ruby-lock-server-and-
 ## Usage
 
 Officer uses the 'daemons' gem to simplify creating long lived background processes.
-Here are some simple examples in case you aren't familiar with it.
 
-'daemons' help information:
-    sudo officer --help
+Help information:
+    officer --help
 
-Officer's help information:
-    sudo officer run -- --help
+    Usage: officer [-hofplsd]
+        -h, --host=HOST                  The hostname or IP to bind to (default: 0.0.0.0)
+        -o, --socket-type=OPTION         TCP (default) or UNIX
+        -f, --socket-file=FILE           Full path and name to the UNIX socket file (only used if --socket-type=UNIX, default: /tmp/officer.sock)
+        -p, --port=PORT                  The port to listen on (default: 11500)
+        -l, --log-level                  Set the log level to debug, info, or error (default: error)
+        -s, --stats                      Log stats every 5 seconds (default: off, required log level: info)
+        -d, --pid-dir                    Set directory where pid file will be saved (default: operating system's run directory)
+            --help
 
 Run Officer in the foreground with full logging and statistics:
-    sudo officer run -- -l debug -s
+    officer run -- -l debug -s -d /tmp
 
 Run Officer in the background (production mode) and listen on a specific IP and port:
-    sudo officer start -- -h 127.0.0.1 -p 9999
+    officer start -- -h 127.0.0.1 -p 9999 -d /tmp
 
 ### Other notes:
 
 - The server listens on 0.0.0.0:11500 by default.
 - All debugging and error output goes to stdout for now.
-- By default, a pid file is created in /var/run and stdout is written to /var/log/officer.output.  This will require root permissions which is normally a bad idea.  You can avoid requirement by picking a different directory (example: officer start -- --pid-dir /tmp).
+- By default, a pid file is created in /var/run and stdout is written to /var/log/officer.output.  This will require root permissions which is normally a bad idea.  You can avoid this by picking a different directory (example: officer start -- -d /tmp).
 - I personally run Officer in production using Ruby Enterprise Edition (REE) which is based on Ruby 1.8.7.
 - RVM and JRuby users should check the [Known Issues](https://github.com/chadrem/officer/wiki/Known-Issues) wiki page.
+- UNIX domain sockets are supported (example: officer start -- -o UNIX -p /tmp)
 
 ## Ruby Client
 
