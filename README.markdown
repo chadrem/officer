@@ -25,11 +25,12 @@ Help information:
         -d, --pid-dir                    Set directory where pid file will be saved (default: operating system's run directory)
             --help
 
-- Run Officer in the foreground with full logging and statistics:
+
+Run Officer in the foreground with full logging and statistics:
 
     officer run -- -l debug -s -d /tmp
 
-- Run Officer in the background (production mode) and listen on a specific IP and port:
+Run Officer in the background (production mode) and listen on a specific IP and port:
 
     officer start -- -h 127.0.0.1 -p 9999 -d /tmp
 
