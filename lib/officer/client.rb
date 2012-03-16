@@ -27,6 +27,11 @@ module Officer
       connect
     end
 
+    def disconnect
+      @socket.close if @socket
+      @socket = nil
+    end
+
     def lock name, options={}
       result = execute :command => 'lock', :name => name_with_ns(name),
         :timeout => options[:timeout], :queue_max => options[:queue_max]
@@ -82,11 +87,6 @@ module Officer
 
       @socket = TCPSocket.new @host, @port.to_i
       @socket.fcntl Fcntl::F_SETFD, Fcntl::FD_CLOEXEC
-    end
-
-    def disconnect
-      @socket.close if @socket
-      @socket = nil
     end
 
     def execute command
