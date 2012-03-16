@@ -29,7 +29,7 @@ Run Officer in the background (production mode) and listen on a specific IP and 
 
 - The server listens on 0.0.0.0:11500 by default.
 - All debugging and error output goes to stdout for now.
-- The daemons gem will create a pid file in /var/run and redirect stdout to /var/log/officer.output when using the 'start' option for background mode.
+- By default, a pid file is created in /var/run and stdout is written to /var/log/officer.output when using the 'start' option for background mode.  This will require root permissions which is normally a bad idea.  You can pick a different directory by using the --pid-dir option (example: officer start -- --pid-dir /tmp).
 - I personally run Officer in production using Ruby Enterprise Edition (REE) which is based on Ruby 1.8.7.
 - RVM and JRuby users should check the [Known Issues](https://github.com/chadrem/officer/wiki/Known-Issues) wiki page.
 
