@@ -56,7 +56,7 @@ Options:
 - :host => Hostname or IP address of the server to bind to (default: 0.0.0.0).
 - :port => TCP Port to listen on (default: 11500).
 - :socket_type => TCP or UNIX (default: TCP).
-- :socket_file => Full path to the server's UNIX domain socket file (default: /tmp/officer.sock).  This option is only used when :socket_type => 'UNIX'.
+- :socket_file => Full path to the server's UNIX domain socket file (default: /tmp/officer.sock).  This option is only used when the socket type is UNIX.
 
 
 ### Lock
