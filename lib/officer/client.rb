@@ -83,6 +83,13 @@ module Officer
       result
     end
 
+    def keep_alive
+      command = { :command => 'keep_alive' }
+      @socket.write command.to_json + "\n"
+      @socket.flush
+      nil
+    end
+
   private
     def connect
       raise AlreadyConnectedError if @socket

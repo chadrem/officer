@@ -5,6 +5,7 @@ module Officer
       def post_init
         @connected = true
         @timers = {} # name => Timer
+        @last_cmd_at = Time.now.utc
 
         Officer::Log.info "Connected: #{to_host_s}"
       end
@@ -16,6 +17,7 @@ module Officer
 
         command = Officer::Command::Factory.create line, self
         command.execute
+        @last_cmd_at = Time.now.utc
 
       rescue Exception => e
         Officer::Log.error e
@@ -91,6 +93,8 @@ module Officer
       include EmCallbacks
       include LockStoreCallbacks
 
+      attr_reader :last_cmd_at
+
       def to_host_s
         begin
           @to_host_s ||= non_cached_to_host_s
@@ -98,6 +102,10 @@ module Officer
           # we assume unix socket, so no ip/port info
           @to_host_s ||= 'UNIX socket client'
         end
+      end
+
+      def received_keep_alive
+
       end
 
     private

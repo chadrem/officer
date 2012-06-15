@@ -26,7 +26,7 @@ module Officer
       def initialize connection, request
         @connection = connection
         @request  = request
-        
+
         setup
 
         raise('Invalid request') unless valid?
@@ -135,5 +135,11 @@ module Officer
       end
     end
 
+    class KeepAlive < Base
+      register
+
+      def execute
+      end
+    end
   end
 end

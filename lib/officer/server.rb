@@ -31,7 +31,10 @@ module Officer
 
       EM::run do
         if @params[:stats]
-          EM::PeriodicTimer.new(5) {Officer::LockStore.instance.log_state}
+          EM::PeriodicTimer.new(5) do
+            Officer::LockStore.instance.log_state
+            Officer::LockStore.instance.watchdog
+          end
         end
 
         if @enable_shutdown_port

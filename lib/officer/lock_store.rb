@@ -142,7 +142,7 @@ module Officer
       @locks.each do |name, lock|
         locks[name] = lock.queue.to_host_a
       end
-      
+
       connection.locks locks
     end
 
@@ -159,6 +159,12 @@ module Officer
     def my_locks connection
       my_locks = @connections[connection] ? @connections[connection].to_a : []
       connection.my_locks my_locks
+    end
+
+    def watchdog
+      @connections.each do |conn, names|
+
+      end
     end
   end
 
