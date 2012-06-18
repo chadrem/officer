@@ -1,3 +1,5 @@
+require 'officer/version'
+
 # Standard Ruby.
 require 'singleton'
 require 'set'
@@ -11,7 +13,6 @@ require 'eventmachine'
 require 'json'
 require 'daemons'
 require 'choice'
-# require 'ruby-debug'
 
 # Application.
 require 'officer/log'
@@ -21,3 +22,6 @@ require 'officer/lock_store'
 require 'officer/runner'
 require 'officer/server'
 require 'officer/client'
+
+module Officer
+end
