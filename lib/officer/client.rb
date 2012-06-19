@@ -1,9 +1,3 @@
-require 'socket'
-require 'fcntl'
-
-require 'rubygems'
-require 'json'
-
 module Officer
 
   class GenericError < RuntimeError; end
@@ -20,6 +14,7 @@ module Officer
       @host = options[:host] || 'localhost'
       @port = options[:port] || 11500
       @namespace = options[:namespace]
+      @keep_alive_freq = options[:keep_alive_freq] || 6 # Hz.
 
       connect
     end
@@ -86,7 +81,6 @@ module Officer
     def keep_alive
       command = { :command => 'keep_alive' }
       @socket.write command.to_json + "\n"
-      @socket.flush
       nil
     end
 
@@ -104,13 +98,25 @@ module Officer
       end
 
       @socket.fcntl Fcntl::F_SETFD, Fcntl::FD_CLOEXEC
+      @socket.setsockopt Socket::IPPROTO_TCP, Socket::TCP_NODELAY, 1
     end
 
     def execute command
       command = command.to_json
       @socket.write command + "\n"
-      result = @socket.gets "\n"
-      JSON.parse result.chomp
+
+      result = nil
+
+      while true
+        rs = IO.select([@socket], nil, nil, @keep_alive_freq)
+
+        if rs.nil?
+          keep_alive
+        else
+          result = @socket.gets "\n"
+          return JSON.parse result.chomp
+        end
+      end
     rescue
       reconnect
       raise

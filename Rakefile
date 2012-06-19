@@ -27,7 +27,7 @@ end
 
 desc 'Run all specs'
 task :spec do
-  puts 'Running rspec...'
+  puts 'Running rspec:'
   system 'rspec spec'
 end
 
