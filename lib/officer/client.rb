@@ -6,6 +6,7 @@ module Officer
   class LockTimeoutError < LockError; end
   class LockQueuedMaxError < LockError; end
   class UnlockError < GenericError; end
+  class SocketResponseError < GenericError; end
 
   class Client
     def initialize options={}
@@ -45,11 +46,23 @@ module Officer
       result = execute :command => 'lock', :name => name_with_ns(name),
         :timeout => options[:timeout], :queue_max => options[:queue_max]
       strip_ns_from_hash result, 'name'
+
+      if result['name'] != name || !%w(acquired already_acquired timed_out queue_maxed).include?(result['result'])
+        force_shutdown
+      end
+
+      result
     end
 
     def unlock name
       result = execute :command => 'unlock', :name => name_with_ns(name)
       strip_ns_from_hash result, 'name'
+
+      if result['name'] != name || !%w(released release_failed).include?(result['result'])
+        force_shutdown
+      end
+
+      result
     end
 
     def with_lock name, options={}
@@ -73,20 +86,42 @@ module Officer
     end
 
     def reset
-      execute :command => 'reset'
+      result = execute :command => 'reset'
+
+      if result['result'] != 'reset_succeeded'
+        force_shutdown
+      end
+
+      result
     end
 
     def locks
-      execute :command => 'locks'
+      result = execute :command => 'locks'
+
+      if result['result'] != 'locks'
+        force_shutdown
+      end
+
+      result
     end
 
     def connections
-      execute :command => 'connections'
+      result = execute :command => 'connections'
+
+      if result['result'] != 'connections'
+        force_shutdown
+      end
+
+      result
     end
 
     def my_locks
       result = execute :command => 'my_locks'
       result['value'] = result['value'].map {|name| strip_ns(name)}
+
+      if result['result'] != 'my_locks'
+        force_shutdown
+      end
 
       result
     end
@@ -174,6 +209,15 @@ module Officer
             @lock.unlock
           end
         end
+      end
+    end
+
+    def force_shutdown
+      begin
+        disconnect
+      rescue Exception => e
+      ensure
+        raise SocketResponseError
       end
     end
   end
