@@ -15,6 +15,9 @@ module Officer
       @port = options[:port] || 11500
       @namespace = options[:namespace]
       @keep_alive_freq = options[:keep_alive_freq] || 6 # Hz.
+      @keep_alive_enabled = options.include?(:keep_alive_enabled) ? options[:keep_alive_enabled] : true
+      @thread = nil
+      @lock = Mutex.new
 
       connect
     end
@@ -22,11 +25,20 @@ module Officer
     def reconnect
       disconnect
       connect
+
+      self
     end
 
     def disconnect
-      @socket.close if @socket
-      @socket = nil
+      @lock.synchronize do
+        @thread.terminate if @thread
+        @thread = nil
+
+        @socket.close if @socket
+        @socket = nil
+      end
+
+      self
     end
 
     def lock name, options={}
@@ -75,46 +87,47 @@ module Officer
     def my_locks
       result = execute :command => 'my_locks'
       result['value'] = result['value'].map {|name| strip_ns(name)}
-      result
-    end
 
-    def keep_alive
-      command = { :command => 'keep_alive' }
-      @socket.write command.to_json + "\n"
-      nil
+      result
     end
 
   private
     def connect
-      raise AlreadyConnectedError if @socket
+      @lock.synchronize do
+        raise AlreadyConnectedError if @socket
 
-      case @socket_type
-      when 'TCP'
-        @socket = TCPSocket.new @host, @port.to_i
-      when 'UNIX'
-        @socket = UNIXSocket.new @socket_file
-      else
-        raise "Invalid socket type: #{@socket_type}"
+        case @socket_type
+        when 'TCP'
+          @socket = TCPSocket.new @host, @port.to_i
+        when 'UNIX'
+          @socket = UNIXSocket.new @socket_file
+        else
+          raise "Invalid socket type: #{@socket_type}"
+        end
+
+        @socket.fcntl Fcntl::F_SETFD, Fcntl::FD_CLOEXEC
+        @socket.setsockopt Socket::IPPROTO_TCP, Socket::TCP_NODELAY, 1
+
+        @thread = Thread.new { thread_main } unless @thread && @thread.alive?
       end
-
-      @socket.fcntl Fcntl::F_SETFD, Fcntl::FD_CLOEXEC
-      @socket.setsockopt Socket::IPPROTO_TCP, Socket::TCP_NODELAY, 1
     end
 
     def execute command
-      command = command.to_json
-      @socket.write command + "\n"
+      @lock.synchronize do
+        command = command.to_json
+        @socket.write command + "\n"
 
-      result = nil
+        result = nil
 
-      while true
-        rs = IO.select([@socket], nil, nil, @keep_alive_freq)
+        while true
+          rs = IO.select([@socket], nil, nil, sleep_sec)
 
-        if rs.nil?
-          keep_alive
-        else
-          result = @socket.gets "\n"
-          return JSON.parse result.chomp
+          if rs.nil?
+            keep_alive
+          else
+            result = @socket.gets "\n"
+            return JSON.parse result.chomp
+          end
         end
       end
     rescue
@@ -133,6 +146,35 @@ module Officer
     def strip_ns_from_hash hash, key
       hash[key] = strip_ns(hash[key])
       hash
+    end
+
+    def sleep_sec
+      60.0 / @keep_alive_freq
+    end
+
+    # This method assumes the calling thread already holds @lock.
+    def keep_alive
+      return unless @keep_alive_enabled
+      return unless @socket
+
+      command = { :command => 'keep_alive' }
+      @socket.write command.to_json + "\n"
+      nil
+    end
+
+    def thread_main
+      while true
+        sleep(sleep_sec)
+
+        if @lock.try_lock
+          begin
+            keep_alive
+          rescue Exception => e
+          ensure
+            @lock.unlock
+          end
+        end
+      end
     end
   end
 
