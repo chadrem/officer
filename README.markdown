@@ -13,16 +13,16 @@ Read more in my blog post: [http://remesch.com/officer-the-ruby-lock-server-and-
 Officer uses the 'daemons' gem to simplify creating long lived background processes.
 
 Help information:
-Usage: officer [-hofplsdm]
-    -h, --host=HOST                  The hostname or IP to bind to (default: 0.0.0.0)
-    -o, --socket-type=OPTION         TCP or UNIX (default: TCP)
-    -f, --socket-file=FILE           Full path and name to the UNIX domain socket file (only used with '-o UNIX', default: /tmp/officer.sock)
-    -p, --port=PORT                  The port to listen on (default: 11500)
-    -l, --log-level                  Set the log level to debug, info, or error (default: error)
-    -s, --stats                      Log stats every 5 seconds (default: off, required log level: info)
-    -d, --pid-dir                    Set directory where pid file will be saved (default: operating system's run directory)
-    -m, --max-idle                   Maximum idle time (in seconds) to wait before closing a connection that is idle and hasn't sent a keep alive (default: 60)
-        --help
+    Usage: officer [-hofplsdm]
+        -h, --host=HOST                  The hostname or IP to bind to (default: 0.0.0.0)
+        -o, --socket-type=OPTION         TCP or UNIX (default: TCP)
+        -f, --socket-file=FILE           Full path and name to the UNIX domain socket file (only used with '-o UNIX', default: /tmp/officer.sock)
+        -p, --port=PORT                  The port to listen on (default: 11500)
+        -l, --log-level                  Set the log level to debug, info, or error (default: error)
+        -s, --stats                      Log stats every 5 seconds (default: off, required log level: info)
+        -d, --pid-dir                    Set directory where pid file will be saved (default: operating system's run directory)
+        -m, --max-idle                   Maximum idle time (in seconds) to wait before closing a connection that is idle and hasn't sent a keep alive (default: 60)
+            --help
 
 Run Officer in the foreground with full logging and statistics:
 
