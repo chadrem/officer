@@ -13,6 +13,7 @@ Read more in my blog post: [http://remesch.com/officer-the-ruby-lock-server-and-
 Officer uses the 'daemons' gem to simplify creating long lived background processes.
 
 Help information:
+
     Usage: officer [-hofplsdm]
         -h, --host=HOST                  The hostname or IP to bind to (default: 0.0.0.0)
         -o, --socket-type=OPTION         TCP or UNIX (default: TCP)
