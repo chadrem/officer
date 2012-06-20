@@ -104,10 +104,6 @@ module Officer
         end
       end
 
-      def received_keep_alive
-
-      end
-
     private
       attr_reader :connected
 
