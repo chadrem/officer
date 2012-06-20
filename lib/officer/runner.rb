@@ -69,6 +69,12 @@ module Officer
           desc "Set directory where pid file will be saved (default: operating system's run directory)"
         end
 
+        option :max_idle do
+          short '-m'
+          long '--max-idle'
+          desc "Maximum idle time (in seconds) to wait before closing a connection that is idle and hasn't sent a keep alive (default: 60)"
+        end
+
         option :help do
           long '--help'
         end

@@ -161,9 +161,12 @@ module Officer
       connection.my_locks my_locks
     end
 
-    def watchdog
+    def close_idle_connections(max_idle)
       @connections.each do |conn, names|
-
+        if conn.last_cmd_at < Time.now.utc - max_idle
+          Officer::Log.error "Closing due to max idle time: #{conn.to_host_s}"
+          conn.close_connection
+        end
       end
     end
   end

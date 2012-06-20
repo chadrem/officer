@@ -19,11 +19,19 @@ module Officer
       params[:socket_file] ||= '/tmp/officer.sock'
       params[:stats] ||= false
       params[:log_level] ||= 'error'
+      params[:close_idle] = params.include?(:close_idle) ? params[:close_idle] : true
+      params[:max_idle] ||= 60 # Seconds.
 
       Officer::Log.set_log_level params[:log_level]
     end
 
     def run
+      Officer::Log.debug 'Starting Officer with params:'
+
+      @params.each do |param, value|
+        Officer::Log.debug "  #{param} => #{value}"
+      end
+
       EM.error_handler {|e| Officer::Log.error e}
 
       EM.kqueue = true if EM.kqueue?
@@ -33,7 +41,12 @@ module Officer
         if @params[:stats]
           EM::PeriodicTimer.new(5) do
             Officer::LockStore.instance.log_state
-            Officer::LockStore.instance.watchdog
+          end
+        end
+
+        if @params[:close_idle]
+          EM::PeriodicTimer.new(5) do
+            Officer::LockStore.instance.close_idle_connections @params[:max_idle]
           end
         end
 
