@@ -26,7 +26,7 @@ module Officer
     end
 
     def run
-      Officer::Log.debug 'Starting Officer with params:'
+      Officer::Log.debug 'Starting Officer #{Officer::VERSION} with params:'
 
       @params.each do |param, value|
         Officer::Log.debug "  #{param} => #{value}"
