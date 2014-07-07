@@ -86,7 +86,7 @@ Options:
 
 ## Unlock
 
-unlock the specified lock.
+Unlock the specified lock.
 
     client.unlock 'some_lock_name'
 
