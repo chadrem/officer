@@ -47,7 +47,7 @@ Run Officer in the background (production mode) and listen on a specific IP and 
     require 'rubygems'
     require 'officer'
 
-### Create a client object
+## Create a client object
 
     client = Officer::Client.new :host => 'localhost', :port => 11500
 
@@ -60,22 +60,11 @@ Options:
 - :namespace => Prepend a namespace to each lock name (default: empty string).
 - :keep_alive_freq => Frequency (in Hz) to send a keep alive message (default: 6 Hz).
 
-### Lock
 
-    client.lock 'some_lock_name'
+## Lock a block of code
 
-Options:
-
-- :timeout => The number of seconds to wait for a lock to become available (default: wait forever).
-- :queue_max => If the lock queue length is greater than :queue_max then don't wait for the lock (default: infinite).
-
-
-### Unlock
-
-    client.unlock 'some_lock_name'
-
-
-### Lock a block of code
+This is the preferred method for locking and unlocking in Officer.
+Note that it raises various exceptions as needed (see lib/officer/client.rb).
 
     client.with_lock('some_lock_name', :timeout => 5) do
       puts 'hello world'
@@ -83,46 +72,65 @@ Options:
 
 Options:
 
-- Same options as the above Lock command.
+- :timeout => The number of seconds to wait for a lock to become available (default: wait forever).
+- :queue_max => If the lock queue length is greater than :queue_max then don't wait for the lock (default: infinite).
 
 
-### Release all locks for this connection
+## Lock
+
+Request the specified lock.
+Note that exceptions are not automatically raised so you will have to check for errors yourself.
+It is recommended to use with_lock where possible.
+
+    client.lock 'some_lock_name'
+
+Options:
+
+- Same options as the above with_lock method.
+
+
+## Unlock
+
+unlock the specified lock.
+
+    client.unlock 'some_lock_name'
+
+## Reset
+
+Release all locks associated with this connection.
 
     client.reset
 
 
-### Reconnect (all locks will be released)
+## Reconnect
+
+This method is useful if you use Officer with Phusion Passenger and smart spawning.  See [Passenger's documentation](http://www.modrails.com/documentation/Users%20guide%20Apache.html#_smart_spawning_gotcha_1_unintentional_file_descriptor_sharing) for more information.
+Note that all locks are released when you disconnect.
 
     client.reconnect
 
-- Useful if you use Officer with Phusion Passenger and smart spawning.  See [Passenger's documentation](http://www.modrails.com/documentation/Users%20guide%20Apache.html#_smart_spawning_gotcha_1_unintentional_file_descriptor_sharing) for more information.
+## Disconnect
 
-
-### Disconnect
+Close the connection to the server.
 
     client.disconnect
 
-- Close the connection to the server.
 
+## Show locks
 
-### Show locks
+Returns the internal state of all the server's locks.
 
     client.locks
 
-- Returns the internal state of all the server's locks.
+## Show connections
 
-
-### Show connections
+Returns the internal state of all the server's connections.
 
     client.connections
 
-- Returns the internal state of all the server's connections.
-
-
-### Show my locks
+## Show my locks
 
     client.my_locks
-
 
 ## Contributing to Officer
 
@@ -133,7 +141,6 @@ Options:
 5. Commit and push until you are happy with your contribution.
 6. Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
 7. Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
-
 
 ## Copyright
 
