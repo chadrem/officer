@@ -146,4 +146,4 @@ These heartbeats may be unreliable with Ruby 1.8 and it's green threads.
 
 ## Copyright
 
-Copyright (c) 2010 - 2012 Chad Remesch. See LICENSE for details.
+Copyright (c) 2010 - 2014 Chad Remesch. See LICENSE for details.
