@@ -42,11 +42,6 @@ Run Officer in the background (production mode) and listen on a specific IP and 
 - RVM and JRuby users should check the [Known Issues](https://github.com/chadrem/officer/wiki/Known-Issues) wiki page.
 - UNIX domain sockets are supported (example: officer start -- -o UNIX -p /tmp)
 
-## Ruby Client
-
-    require 'rubygems'
-    require 'officer'
-
 ## Create a client object
 
     client = Officer::Client.new :host => 'localhost', :port => 11500
