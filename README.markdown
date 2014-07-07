@@ -132,7 +132,7 @@ Returns the internal state of all the server's connections.
 Officer is tested and used in production with MRI Ruby 1.9.x and newer.
 It should also work with any modern Ruby that supports EventMachine.
 You should avoid Ruby 1.8.x and older since the client library uses a background thread for network heartbeats.
-These heartbeats may be unreliable with with Ruby 1.8 and it's green threads.
+These heartbeats may be unreliable with Ruby 1.8 and it's green threads.
 
 ## Contributing to Officer
 
