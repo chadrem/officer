@@ -14,3 +14,4 @@ tmtags
 *.rbc
 .rvmrc
 .project
+.ruby-version
