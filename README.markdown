@@ -1,6 +1,4 @@
-# Officer - Ruby lock server and client built on EventMachine
-
-[![Build Status](https://travis-ci.org/chadrem/officer.svg)](https://travis-ci.org/chadrem/officer)
+# Officer - Ruby lock server and client [![Build Status](https://travis-ci.org/chadrem/officer.svg)](https://travis-ci.org/chadrem/officer)
 
 Officer is designed to help you coordinate distributed processes and avoid race conditions.  Inspiration comes from [elock](http://github.com/dustin/elock).
 
