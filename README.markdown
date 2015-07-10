@@ -1,6 +1,8 @@
-# Officer - Ruby lock server and client [![Build Status](https://travis-ci.org/chadrem/officer.svg)](https://travis-ci.org/chadrem/officer) [![Coverage Status](https://coveralls.io/repos/chadrem/officer/badge.svg?branch=ma ster&service=github)](https://coveralls.io/github/chadrem/officer?branch=master)
+# Officer [![Build Status](https://travis-ci.org/chadrem/officer.svg)](https://travis-ci.org/chadrem/officer) [![Coverage Status](https://coveralls.io/repos/chadrem/officer/badge.svg?branch=ma ster&service=github)](https://coveralls.io/github/chadrem/officer?branch=master)
 
-Officer is designed to help you coordinate distributed processes and avoid race conditions.  Inspiration comes from [elock](http://github.com/dustin/elock).
+Officer is a Ruby based lock server and client.
+It is designed to help you coordinate distributed processes and avoid race conditions.
+Inspiration comes from [elock](http://github.com/dustin/elock).
 
 Read more in my blog post: [http://remesch.com/officer-the-ruby-lock-server-and-client](http://remesch.com/officer-the-ruby-lock-server-and-client)
 
