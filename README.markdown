@@ -1,4 +1,4 @@
-# Officer [![Build Status](https://travis-ci.org/chadrem/officer.svg)](https://travis-ci.org/chadrem/officer) [![Coverage Status](https://coveralls.io/repos/chadrem/officer/badge.svg?branch=ma ster&service=github)](https://coveralls.io/github/chadrem/officer?branch=master)
+# Officer [![Build Status](https://travis-ci.org/chadrem/officer.svg)](https://travis-ci.org/chadrem/officer) [![Coverage Status](https://coveralls.io/repos/chadrem/officer/badge.svg?branch=master&service=github)](https://coveralls.io/github/chadrem/officer?branch=master)
 
 Officer is a Ruby based lock server and client.
 It is designed to help you coordinate distributed processes and avoid race conditions.
